@@ -15,6 +15,12 @@
   #title{font-size:22px; font-weight:700; letter-spacing:-.01em}
   #round{background:#3a3a37; color:#d9d8d3; border-radius:999px; font-size:14px; padding:5px 14px}
   #spacer{flex:1}
+  .seg{display:flex; border:1px solid #3a3a37; border-radius:9px; overflow:hidden}
+  .seg button{background:none; border:none; color:#c9c8c3; cursor:pointer; font-size:13px;
+    padding:7px 16px; font-weight:500}
+  .seg button + button{border-left:1px solid #3a3a37}
+  .seg button:hover{background:#2e2e2b; color:#fff}
+  .seg button.on{background:#f2f1ee; color:#1d1d1b; font-weight:650}
   #listbtn{background:none; border:none; width:34px; height:34px; color:#8f8e89; cursor:pointer; padding:5px}
   #listbtn svg{width:100%; height:100%}
   #listbtn:hover{color:#f2f1ee}
@@ -37,15 +43,17 @@
   .vgroup h3{font-size:13px; font-weight:650; letter-spacing:.08em; text-transform:uppercase;
     color:#8f8e89; margin-bottom:16px}
   .vrow{display:flex; gap:22px; align-items:flex-start}
-  .tile{flex:1; min-width:0}
+  /* the 9:16 must fit the viewport; its height dictates the shared tile width */
+  .tile{flex:none; width:min(calc((100vh - 310px) * 0.5625), calc((100% - 44px) / 3)); min-width:0}
   .tile img{width:100%; display:block; cursor:pointer; box-shadow:0 18px 50px rgba(0,0,0,.45)}
-  .tcap{color:#8f8e89; font-size:12px; margin:10px 0 8px;
-    font-family:"SF Mono",ui-monospace,Menlo,monospace}
-  .tbtns{display:flex; gap:8px}
-  .tbtns a,.tbtns button{flex:1; text-align:center; background:none; border:1px solid #3a3a37;
-    border-radius:8px; color:#f2f1ee; font:inherit; font-size:12.5px; padding:8px 4px; cursor:pointer;
-    text-decoration:none}
-  .tbtns a:hover,.tbtns button:hover{border-color:#575652}
+  .tmeta{display:flex; align-items:center; justify-content:space-between; margin-top:9px}
+  .tcap{color:#8f8e89; font-size:11px; font-family:"SF Mono",ui-monospace,Menlo,monospace}
+  .tbtns{display:flex; gap:6px}
+  .tbtns a,.tbtns button{display:flex; align-items:center; justify-content:center; width:28px; height:28px;
+    background:none; border:1px solid #3a3a37; border-radius:7px; color:#c9c8c3; cursor:pointer;
+    text-decoration:none; padding:0}
+  .tbtns a:hover,.tbtns button:hover{border-color:#575652; color:#fff}
+  .tbtns svg{width:14px; height:14px}
 
   #meta{width:330px; flex:none; overflow-y:auto; padding-bottom:48px; scrollbar-width:none}
   #meta::-webkit-scrollbar{display:none}
@@ -131,6 +139,7 @@
     <div id="title">BAI-01-01</div>
     <span id="round">Round 1</span>
     <div id="spacer"></div>
+    <div class="seg" id="variantseg"></div>
   </header>
   <main>
     <div id="gallery"></div>
@@ -195,40 +204,40 @@ const $ = id => document.getElementById(id);
 const fileFor = (v, s) => CODE + '-' + VARIANTS[v].key + '_' + SIZES[s].file + '.png';
 const srcFor = (v, s) => DIR + fileFor(v, s);
 
-/* gallery: every variant, every size, one shared width */
+/* tabbed gallery: one cast member at a time, all three sizes */
 const gal = $('gallery');
-VARIANTS.forEach((V, v) => {
-  const g = document.createElement('div');
-  g.className = 'vgroup';
+const meta = $('meta');
+function render(){
+  const seg = $('variantseg');
+  seg.innerHTML = '';
+  VARIANTS.forEach((V, v) => {
+    const b = document.createElement('button');
+    b.textContent = V.label;
+    if (v === vi) b.className = 'on';
+    b.addEventListener('click', () => { vi = v; render(); });
+    seg.appendChild(b);
+  });
+
+  const V = VARIANTS[vi], v = vi;
   let tiles = '';
   SIZES.forEach((S, s) => {
     tiles += '<div class="tile">' +
       '<img src="' + srcFor(v, s) + '" data-v="' + v + '" data-s="' + s + '" alt="">' +
-      '<div class="tcap">' + S.label + ' &middot; ' + S.file.split('_')[1] + '</div>' +
+      '<div class="tmeta"><div class="tcap">' + S.label + ' &middot; ' + S.file.split('_')[1] + '</div>' +
       '<div class="tbtns">' +
-      '<a href="' + srcFor(v, s) + '" download="' + fileFor(v, s) + '">Download</a>' +
-      '<button data-v="' + v + '" data-s="' + s + '">Mobile preview</button>' +
-      '</div></div>';
+      '<a href="' + srcFor(v, s) + '" download="' + fileFor(v, s) + '" title="Download">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></a>' +
+      '<button data-v="' + v + '" data-s="' + s + '" title="Mobile preview">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></button>' +
+      '</div></div></div>';
   });
-  g.innerHTML = '<h3>' + V.label + '</h3><div class="vrow">' + tiles + '</div>';
-  gal.appendChild(g);
-});
-gal.addEventListener('click', e => {
-  const t = e.target.closest('img[data-v], button[data-v]');
-  if (!t) return;
-  vi = +t.dataset.v; si = +t.dataset.s;
-  openMock(srcFor(vi, si));
-});
+  gal.innerHTML = '<div class="vgroup"><div class="vrow">' + tiles + '</div></div>';
 
-/* meta panel: post copy + tracking per variant */
-const meta = $('meta');
-VARIANTS.forEach((V, v) => {
   const utmContent = (CODE + '-' + V.key).toLowerCase();
   const tagged = 'https://www.' + V.fb.url + '/?utm_source=' + UTM.source +
     '&utm_medium=' + UTM.medium + '&utm_campaign=' + UTM.campaign + '&utm_content=' + utmContent;
-  const d = document.createElement('div');
-  d.innerHTML =
-    '<h2>' + V.label + ' &middot; Facebook post</h2>' +
+  meta.innerHTML =
+    '<h2>Facebook post</h2>' +
     '<div class="mlabel">Primary text</div><div class="mval">' + V.fb.primary + '</div>' +
     '<div class="mlabel">Headline</div><div class="mval">' + V.fb.headline + '</div>' +
     '<div class="mlabel">Description</div><div class="mval">' + V.fb.desc + '</div>' +
@@ -236,7 +245,12 @@ VARIANTS.forEach((V, v) => {
     '<div class="mlabel">UTM content</div><div class="mval"><code class="inlinecode">' + utmContent + '</code></div>' +
     '<div class="mlabel">Tagged URL</div>' +
     '<div class="filerow"><code>' + tagged + '</code><button class="copyurl" data-url="' + tagged + '">Copy</button></div>';
-  meta.appendChild(d);
+}
+gal.addEventListener('click', e => {
+  const t = e.target.closest('img[data-v], button[data-v]');
+  if (!t) return;
+  vi = +t.dataset.v; si = +t.dataset.s;
+  openMock(srcFor(vi, si));
 });
 meta.addEventListener('click', e => {
   const b = e.target.closest('.copyurl');
@@ -245,6 +259,7 @@ meta.addEventListener('click', e => {
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(b.dataset.url).then(done, () => {});
   else done();
 });
+render();
 
 /* phone mock */
 const CHILLI = '#D84727';
@@ -299,6 +314,7 @@ $('mockclose').addEventListener('click', closeMock);
 $('mockview').addEventListener('click', e => { if (e.target === $('mockview')) closeMock(); });
 window.addEventListener('keydown', e => {
   if (e.code === 'Escape') closeMock();
+  if (e.code === 'ArrowLeft' || e.code === 'ArrowRight'){ vi = (vi + 1) % VARIANTS.length; render(); }
 });
 </script>
 </body>
