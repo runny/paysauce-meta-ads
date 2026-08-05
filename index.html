@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PaySauce · BAI-01-01 · Round 1</title>
+<style>
+  *{box-sizing:border-box; margin:0; padding:0}
+  html,body{height:100%}
+  body{background:#1d1d1b; color:#f2f1ee; display:flex; flex-direction:column;
+    font:15px/1.5 -apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; overflow:hidden}
+
+  header{flex:none; display:flex; align-items:center; gap:14px; padding:40px}
+  #title{font-size:22px; font-weight:700; letter-spacing:-.01em}
+  #round{background:#3a3a37; color:#d9d8d3; border-radius:999px; font-size:14px; padding:5px 14px}
+  #spacer{flex:1}
+  .seg{display:flex; border:1px solid #3a3a37; border-radius:9px; overflow:hidden}
+  .seg button{background:none; border:none; color:#c9c8c3; cursor:pointer; font-size:13px;
+    padding:7px 16px; font-weight:500}
+  .seg button + button{border-left:1px solid #3a3a37}
+  .seg button:hover{background:#2e2e2b; color:#fff}
+  .seg button.on{background:#f2f1ee; color:#1d1d1b; font-weight:650}
+  #listbtn{background:none; border:none; width:34px; height:34px; color:#8f8e89; cursor:pointer; padding:5px}
+  #listbtn svg{width:100%; height:100%}
+  #listbtn:hover{color:#f2f1ee}
+  #leftdrawer{position:fixed; top:0; left:0; bottom:0; width:280px; background:#242422;
+    border-right:1px solid #3a3a37; box-shadow:24px 0 60px rgba(0,0,0,.45);
+    transform:translateX(-105%); transition:transform .25s ease; z-index:50; padding:28px 0; overflow-y:auto}
+  #leftdrawer.open{transform:translateX(0)}
+  #leftdrawer a{display:flex; align-items:center; gap:10px; width:100%;
+    color:#dddcd7; font:inherit; font-size:15px; padding:11px 26px; text-decoration:none}
+  #leftdrawer a:hover{background:#2e2e2b; color:#fff}
+  #leftdrawer a.here{color:#fff; font-weight:650}
+  #leftdrawer a.here::after{content:""; width:6px; height:6px; border-radius:50%; background:#f2f1ee; margin-left:auto}
+  #leftdrawer .sep{height:1px; background:#3a3a37; margin:14px 26px}
+  #leftdrawer .sect{color:#8f8e89; font-size:11px; text-transform:uppercase; letter-spacing:.09em; padding:4px 26px 6px}
+
+  main{flex:1; min-height:0; display:flex; gap:44px; padding:0 40px 40px}
+  #stage{flex:1; min-width:0; display:flex; align-items:center; justify-content:center}
+  #art{max-height:85%; max-width:100%; cursor:pointer; box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  #meta{width:330px; flex:none; align-self:center}
+  #meta h2{font-size:11px; font-weight:650; letter-spacing:.1em; text-transform:uppercase;
+    color:#8f8e89; margin:26px 0 10px}
+  #meta h2:first-child{margin-top:0}
+  .filerow{display:flex; gap:8px; align-items:center}
+  .filerow code{flex:1; font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:12px;
+    color:#dddcd7; background:#242422; border:1px solid #3a3a37; border-radius:8px;
+    padding:9px 11px; overflow-wrap:anywhere}
+  .filerow button{background:none; border:1px solid #3a3a37; border-radius:8px; color:#f2f1ee;
+    font-size:12px; padding:8px 12px; cursor:pointer}
+  .filerow button:hover{border-color:#575652}
+  .mlabel{color:#8f8e89; font-size:12px; margin:14px 0 4px}
+  .mval{color:#e8e7e3; font-size:14px; line-height:1.55}
+  .ctachip{display:inline-block; background:#3a3a37; border-radius:7px; padding:5px 12px;
+    font-size:13px; font-weight:600}
+  .inlinecode{font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:12px; color:#dddcd7}
+
+  /* phone mock (light chrome) */
+  #mockview{position:fixed; inset:0; background:rgba(10,10,9,.92); z-index:40; display:none;
+    align-items:center; justify-content:center}
+  #mockview.open{display:flex}
+  #mockclose{position:absolute; top:28px; right:36px; background:none; border:none; color:#f2f1ee;
+    font-size:34px; font-weight:300; cursor:pointer; line-height:1}
+  #mockclose:hover{opacity:.7}
+  #phone{width:376px; height:min(812px, calc(100vh - 90px)); background:#fff; border-radius:44px;
+    border:1px solid #3a3a37; box-shadow:0 40px 120px rgba(0,0,0,.7); overflow:hidden;
+    display:flex; flex-direction:column; position:relative}
+  #statusbar{flex:none; height:44px; display:flex; align-items:center; justify-content:space-between;
+    padding:0 26px; color:#111; font-size:13px; font-weight:600; background:#fff}
+  #statusbar .pill{width:90px; height:22px; background:#000; border-radius:12px;
+    position:absolute; left:50%; transform:translateX(-50%); top:11px}
+  #feed{flex:1; overflow-y:auto; background:#f2f2f0; scrollbar-width:none}
+  #feed::-webkit-scrollbar{display:none}
+  .post{background:#fff; margin-bottom:8px}
+  .posthead{display:flex; align-items:center; gap:10px; padding:11px 14px}
+  .avatar{width:34px; height:34px; border-radius:50%; flex:none}
+  .pmeta .l1{height:9px; border-radius:5px; background:#dcdcda; width:110px; margin-bottom:5px; display:block}
+  .pmeta .l2{height:7px; border-radius:4px; background:#ebebe9; width:64px; display:block}
+  .pimg{background:#e6e6e4; width:100%}
+  .adimg{width:100%; display:block}
+  .ctabar{display:flex; align-items:center; justify-content:space-between; background:#f0f0ee;
+    padding:12px 14px; color:#111; font-size:13px; font-weight:600}
+  .ctabar span{color:#8a8a87; font-weight:400}
+  .actions{display:flex; gap:16px; padding:11px 14px}
+  .actions i{width:20px; height:20px; border-radius:50%; border:2px solid #d7d7d5; display:block}
+  .cap{padding:0 14px 14px}
+  .cap .l1{height:8px; border-radius:4px; background:#e6e6e4; width:82%; margin-bottom:6px}
+  .cap .l2{height:8px; border-radius:4px; background:#e6e6e4; width:55%}
+  .primary{padding:0 14px 11px; color:#111; font-size:13.5px; line-height:1.45}
+  .linkcard{display:flex; align-items:center; justify-content:space-between; gap:12px;
+    background:#f0f0ee; padding:11px 14px}
+  .lc-left{display:flex; flex-direction:column; gap:2px; min-width:0}
+  .lc-url{color:#8a8a87; font-size:10.5px; letter-spacing:.02em}
+  .lc-head{color:#111; font-size:13.5px; font-weight:650; line-height:1.25}
+  .lc-cta{flex:none; background:#e4e6ea; color:#111; font-size:13px; font-weight:650;
+    border-radius:7px; padding:8px 14px}
+  .adname{color:#111; font-size:13px; font-weight:650; line-height:1.2}
+  .adsub{color:#8a8a87; font-size:11px}
+  #phone.story{height:min(712px, calc(100vh - 90px))}
+  #phone.story #feed{overflow:hidden; position:relative}
+  .storyimg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+  .storytop{position:absolute; top:0; left:0; right:0; padding:12px 14px; z-index:2}
+  .storybars{display:flex; gap:5px; margin-bottom:12px}
+  .storybars i{flex:1; height:2.5px; border-radius:2px; background:rgba(255,255,255,.35)}
+  .storybars i.on{background:#fff}
+  .storyhead{display:flex; align-items:center; gap:9px}
+  .storycta{position:absolute; left:0; right:0; bottom:24px; display:flex; flex-direction:column;
+    align-items:center; gap:8px; z-index:2; color:#fff}
+  .storycta .chev{font-size:18px}
+  .storycta .pillbtn{background:#fff; color:#111; font-size:13px; font-weight:650;
+    padding:9px 22px; border-radius:999px}
+</style>
+</head>
+<body>
+  <div id="gate" style="position:fixed; inset:0; background:#1d1d1b; z-index:100; display:flex; align-items:center; justify-content:center">
+    <div style="text-align:center">
+      <div style="font-size:18px; font-weight:700; margin-bottom:18px">PaySauce · Creative</div>
+      <input id="pw" type="password" placeholder="Password" autocomplete="off" style="background:#242422; border:1px solid #3a3a37; border-radius:9px; color:#f2f1ee; font-size:15px; padding:11px 14px; width:240px; text-align:center; outline:none">
+      <div id="pwmsg" style="color:#8f8e89; font-size:12px; margin-top:12px; height:16px"></div>
+    </div>
+  </div>
+  <header>
+    <div id="title">BAI-01-01</div>
+    <span id="round">Round 1</span>
+    <div id="spacer"></div>
+    <div class="seg" id="variantseg"></div>
+    <div class="seg" id="sizeseg"></div>
+  </header>
+  <main>
+    <div id="stage"><img id="art" alt="Final ad"></div>
+    <aside id="meta">
+      <h2>File</h2>
+      <div class="filerow"><code id="filename"></code><button id="copyfile">Copy</button></div>
+      <h2>Facebook post</h2>
+      <div class="mlabel">Primary text</div>
+      <div class="mval" id="m-primary"></div>
+      <div class="mlabel">Headline</div>
+      <div class="mval" id="m-headline"></div>
+      <div class="mlabel">Call to action</div>
+      <div class="mval"><span class="ctachip" id="m-cta"></span></div>
+      <div class="mlabel">Destination</div>
+      <div class="mval" id="m-url"></div>
+      <h2>Tracking</h2>
+      <div class="mlabel">UTM content</div>
+      <div class="mval"><code class="inlinecode" id="m-utm"></code></div>
+      <div class="mlabel">Tagged URL</div>
+      <div class="filerow"><code id="m-taggedurl"></code><button id="copyurl">Copy</button></div>
+    </aside>
+  </main>
+
+  <div id="mockview">
+    <button id="mockclose">&times;</button>
+    <div id="phone">
+      <div id="statusbar"><span>9:41</span><span class="pill"></span><span>&#9679;&#9679;&#9679;</span></div>
+      <div id="feed"></div>
+    </div>
+  </div>
+
+<script>
+"use strict";
+const GATE_HASH = "db8cf3338c29849e56bf0b0c9aa8eeaa1a87d168f31979fd533e2ad9cd45a103";
+async function tryUnlock(v){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
+  const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+  if (hex === GATE_HASH){ sessionStorage.setItem('r1-ok','1'); document.getElementById('gate').remove(); return true; }
+  return false;
+}
+if (sessionStorage.getItem('r1-ok') === '1'){
+  window.addEventListener('DOMContentLoaded', () => document.getElementById('gate').remove());
+} else {
+  window.addEventListener('DOMContentLoaded', () => {
+    const pw = document.getElementById('pw');
+    pw.focus();
+    pw.addEventListener('keydown', async e => {
+      if (e.key === 'Enter' && !(await tryUnlock(pw.value))){
+        document.getElementById('pwmsg').textContent = 'Not quite.';
+        pw.value = '';
+      }
+    });
+  });
+}
+const DIR = 'creatives/round1/';
+const CODE = 'BAI-01-01';
+/* UTM scheme: content is derived from code+variant so it cannot drift.
+   Campaign name is the one hand-set value; confirm with Yash. */
+const UTM = {source: 'facebook', medium: 'paid-social', campaign: 'au-launch'};
+const VARIANTS = [
+  {key: 'v1-chef', label: 'Chef',
+   fb: {primary: "Pays, super, PAYG and payslips, handled in one pay run. Payroll that takes payday off your plate.",
+        headline: "Payroll, sorted in one tap",
+        cta: "Learn more", url: "paysauce.com"}},
+  {key: 'v1-framer', label: 'Framer',
+   fb: {primary: "Payday, payments and filing handled, so it's off your mind by morning tea. Built for small business.",
+        headline: "That's payroll sorted",
+        cta: "Learn more", url: "paysauce.com"}},
+];
+const SIZES = [
+  {key: '1x1',  label: '1:1',  file: '1x1_1080x1080'},
+  {key: '4x5',  label: '4:5',  file: '4x5_1080x1350'},
+  {key: '9x16', label: '9:16', file: '9x16_1080x1920'},
+];
+let vi = 0, si = 1;
+const $ = id => document.getElementById(id);
+
+function src(){ return DIR + CODE + '-' + VARIANTS[vi].key + '_' + SIZES[si].file + '.png'; }
+
+function segs(el, items, getSel, setSel){
+  el.innerHTML = '';
+  items.forEach((it, i) => {
+    const b = document.createElement('button');
+    b.textContent = it.label;
+    if (i === getSel()) b.className = 'on';
+    b.addEventListener('click', () => { setSel(i); render(); });
+    el.appendChild(b);
+  });
+}
+function render(){
+  segs($('variantseg'), VARIANTS, () => vi, v => vi = v);
+  segs($('sizeseg'), SIZES, () => si, v => si = v);
+  $('art').src = src();
+  const fb = VARIANTS[vi].fb;
+  $('filename').textContent = src().split('/').pop();
+  $('m-primary').textContent = fb.primary;
+  $('m-headline').textContent = fb.headline;
+  $('m-cta').textContent = fb.cta;
+  $('m-url').textContent = fb.url;
+  const utmContent = (CODE + '-' + VARIANTS[vi].key).toLowerCase();
+  $('m-utm').textContent = utmContent;
+  $('m-taggedurl').textContent = 'https://www.' + fb.url +
+    '/?utm_source=' + UTM.source + '&utm_medium=' + UTM.medium +
+    '&utm_campaign=' + UTM.campaign + '&utm_content=' + utmContent;
+}
+$('copyfile') && $('copyfile');
+$('art').addEventListener('click', () => openMock(src()));
+$('copyurl').addEventListener('click', () => {
+  const t = $('m-taggedurl').textContent;
+  const done = () => { $('copyurl').textContent = 'Copied'; setTimeout(() => $('copyurl').textContent = 'Copy', 1200); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, () => {});
+  else done();
+});
+$('copyfile').addEventListener('click', () => {
+  const t = src().split('/').pop();
+  const done = () => { $('copyfile').textContent = 'Copied'; setTimeout(() => $('copyfile').textContent = 'Copy', 1200); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, () => {});
+  else done();
+});
+
+const CHILLI = '#D84727';
+function dummyPost(h){
+  return '<div class="post">' +
+    '<div class="posthead"><span class="avatar" style="background:#dedddb"></span>' +
+    '<span class="pmeta"><span class="l1"></span><span class="l2"></span></span></div>' +
+    '<div class="pimg" style="height:' + h + 'px"></div>' +
+    '<div class="actions"><i></i><i></i><i></i></div>' +
+    '<div class="cap"><div class="l1"></div><div class="l2"></div></div></div>';
+}
+const AVATAR = '<span class="avatar" style="background:' + CHILLI + '; display:flex; align-items:center; justify-content:center"><img src="assets/splodge--white.svg" style="width:58%; height:58%"></span>';
+function openMock(url){
+  const phone = $('phone'), feed = $('feed');
+  if (SIZES[si].key === '9x16'){
+    phone.classList.add('story');
+    feed.innerHTML =
+      '<img class="storyimg" src="' + url + '">' +
+      '<div class="storytop"><div class="storybars"><i class="on"></i><i></i><i></i></div>' +
+      '<div class="storyhead">' + AVATAR +
+      '<span><div class="adname" style="color:#fff">PaySauce</div><div class="adsub" style="color:rgba(255,255,255,.8)">Sponsored</div></span></div></div>' +
+      '<div class="storycta"><span class="chev">&#8963;</span><span class="pillbtn">' + VARIANTS[vi].fb.cta + '</span></div>';
+  } else {
+    phone.classList.remove('story');
+    const fb = VARIANTS[vi].fb;
+    feed.innerHTML =
+      dummyPost(300) +
+      '<div class="post" id="adpost">' +
+      '<div class="posthead">' + AVATAR +
+      '<span><div class="adname">PaySauce</div><div class="adsub">Sponsored</div></span></div>' +
+      '<div class="primary">' + fb.primary + '</div>' +
+      '<img class="adimg" src="' + url + '">' +
+      '<div class="linkcard"><span class="lc-left"><span class="lc-url">' + fb.url.toUpperCase() + '</span>' +
+      '<span class="lc-head">' + fb.headline + '</span></span>' +
+      '<span class="lc-cta">' + fb.cta + '</span></div>' +
+      '<div class="actions"><i></i><i></i><i></i></div>' +
+      '<div class="cap"><div class="l1"></div><div class="l2"></div></div>' +
+      '</div>' +
+      dummyPost(340) + dummyPost(280);
+  }
+  $('mockview').classList.add('open');
+  if (SIZES[si].key !== '9x16'){
+    requestAnimationFrame(() => {
+      const ad = document.getElementById('adpost');
+      if (ad) feed.scrollTop = Math.max(0, ad.offsetTop - 90);
+    });
+  }
+}
+function closeMock(){ $('mockview').classList.remove('open'); }
+$('mockclose').addEventListener('click', closeMock);
+$('mockview').addEventListener('click', e => { if (e.target === $('mockview')) closeMock(); });
+window.addEventListener('keydown', e => {
+  if (e.code === 'Escape') closeMock();
+  if (e.code === 'ArrowLeft'){ si = (si + SIZES.length - 1) % SIZES.length; render(); }
+  if (e.code === 'ArrowRight'){ si = (si + 1) % SIZES.length; render(); }
+  if (e.code === 'ArrowUp' || e.code === 'ArrowDown'){ vi = (vi + 1) % VARIANTS.length; render(); }
+});
+render();
+</script>
+</body>
+</html>
