@@ -93,6 +93,7 @@
   .lc-left{display:flex; flex-direction:column; gap:2px; min-width:0}
   .lc-url{color:#8a8a87; font-size:10.5px; letter-spacing:.02em}
   .lc-head{color:#111; font-size:13.5px; font-weight:650; line-height:1.25}
+  .lc-desc{color:#8a8a87; font-size:12px; line-height:1.3}
   .lc-cta{flex:none; background:#e4e6ea; color:#111; font-size:13px; font-weight:650;
     border-radius:7px; padding:8px 14px}
   .adname{color:#111; font-size:13px; font-weight:650; line-height:1.2}
@@ -137,6 +138,8 @@
       <div class="mval" id="m-primary"></div>
       <div class="mlabel">Headline</div>
       <div class="mval" id="m-headline"></div>
+      <div class="mlabel">Description</div>
+      <div class="mval" id="m-desc"></div>
       <div class="mlabel">Call to action</div>
       <div class="mval"><span class="ctachip" id="m-cta"></span></div>
       <div class="mlabel">Destination</div>
@@ -189,10 +192,12 @@ const VARIANTS = [
   {key: 'v1-chef', label: 'Chef',
    fb: {primary: "Pays, super, PAYG and payslips, handled in one pay run. Payroll that takes payday off your plate.",
         headline: "Payroll, sorted in one tap",
+        desc: "Try PaySauce for free.",
         cta: "Learn more", url: "paysauce.com"}},
   {key: 'v1-framer', label: 'Framer',
    fb: {primary: "Payday, payments and filing handled, so it's off your mind by morning tea. Built for small business.",
         headline: "That's payroll sorted",
+        desc: "Payroll made easy.",
         cta: "Learn more", url: "paysauce.com"}},
 ];
 const SIZES = [
@@ -223,6 +228,7 @@ function render(){
   $('filename').textContent = src().split('/').pop();
   $('m-primary').textContent = fb.primary;
   $('m-headline').textContent = fb.headline;
+  $('m-desc').textContent = fb.desc || '';
   $('m-cta').textContent = fb.cta;
   $('m-url').textContent = fb.url;
   const utmContent = (CODE + '-' + VARIANTS[vi].key).toLowerCase();
@@ -277,7 +283,8 @@ function openMock(url){
       '<div class="primary">' + fb.primary + '</div>' +
       '<img class="adimg" src="' + url + '">' +
       '<div class="linkcard"><span class="lc-left"><span class="lc-url">' + fb.url.toUpperCase() + '</span>' +
-      '<span class="lc-head">' + fb.headline + '</span></span>' +
+      '<span class="lc-head">' + fb.headline + '</span>' +
+      '<span class="lc-desc">' + (fb.desc || '') + '</span></span>' +
       '<span class="lc-cta">' + fb.cta + '</span></div>' +
       '<div class="actions"><i></i><i></i><i></i></div>' +
       '<div class="cap"><div class="l1"></div><div class="l2"></div></div>' +
