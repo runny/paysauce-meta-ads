@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PaySauce · BAI-01-01 · Round 1</title>
+<title>PaySauce Meta Ads</title>
 <style>
   *{box-sizing:border-box; margin:0; padding:0}
   html,body{height:100%}
@@ -21,20 +21,14 @@
   .seg button + button{border-left:1px solid #3a3a37}
   .seg button:hover{background:#2e2e2b; color:#fff}
   .seg button.on{background:#f2f1ee; color:#1d1d1b; font-weight:650}
-  #listbtn{background:none; border:none; width:34px; height:34px; color:#8f8e89; cursor:pointer; padding:5px}
-  #listbtn svg{width:100%; height:100%}
-  #listbtn:hover{color:#f2f1ee}
-  #leftdrawer{position:fixed; top:0; left:0; bottom:0; width:280px; background:#242422;
-    border-right:1px solid #3a3a37; box-shadow:24px 0 60px rgba(0,0,0,.45);
-    transform:translateX(-105%); transition:transform .25s ease; z-index:50; padding:28px 0; overflow-y:auto}
-  #leftdrawer.open{transform:translateX(0)}
-  #leftdrawer a{display:flex; align-items:center; gap:10px; width:100%;
-    color:#dddcd7; font:inherit; font-size:15px; padding:11px 26px; text-decoration:none}
-  #leftdrawer a:hover{background:#2e2e2b; color:#fff}
-  #leftdrawer a.here{color:#fff; font-weight:650}
-  #leftdrawer a.here::after{content:""; width:6px; height:6px; border-radius:50%; background:#f2f1ee; margin-left:auto}
-  #leftdrawer .sep{height:1px; background:#3a3a37; margin:14px 26px}
-  #leftdrawer .sect{color:#8f8e89; font-size:11px; text-transform:uppercase; letter-spacing:.09em; padding:4px 26px 6px}
+
+  #rtabs{flex:none; display:flex; gap:2px; padding:0 40px; margin-bottom:26px;
+    border-bottom:1px solid #3a3a37}
+  #rtabs button{background:none; border:none; border-bottom:2px solid transparent; color:#8f8e89;
+    cursor:pointer; font:inherit; font-size:14px; font-weight:550; padding:11px 20px 10px}
+  #rtabs button:hover{color:#dddcd7}
+  #rtabs button.on{color:#fff; border-bottom-color:#f2f1ee}
+  #jobcode{font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:13px; color:#e8e7e3; letter-spacing:.03em}
 
   main{flex:1; min-height:0; display:flex; gap:44px; padding:0 40px}
   #vlist{width:170px; flex:none; padding-top:6px}
@@ -130,18 +124,11 @@
 </style>
 </head>
 <body>
-  <div id="gate" style="position:fixed; inset:0; background:#1d1d1b; z-index:100; display:flex; align-items:center; justify-content:center">
-    <div style="text-align:center">
-      <div style="font-size:18px; font-weight:700; margin-bottom:18px">PaySauce · Creative</div>
-      <input id="pw" type="password" placeholder="Password" autocomplete="off" style="background:#242422; border:1px solid #3a3a37; border-radius:9px; color:#f2f1ee; font-size:15px; padding:11px 14px; width:240px; text-align:center; outline:none">
-      <div id="pwmsg" style="color:#8f8e89; font-size:12px; margin-top:12px; height:16px"></div>
-    </div>
-  </div>
   <header>
-    <div id="title">BAI-01-01</div>
-    <span id="round">Round 1</span>
+    <div id="title">PaySauce Meta Ads</div>
     <div id="spacer"></div>
   </header>
+  <div id="rtabs"></div>
   <main>
     <nav id="vlist"></nav>
     <div id="gallery"></div>
@@ -158,61 +145,66 @@
 
 <script>
 "use strict";
-const GATE_HASH = "db8cf3338c29849e56bf0b0c9aa8eeaa1a87d168f31979fd533e2ad9cd45a103";
-async function tryUnlock(v){
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
-  const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
-  if (hex === GATE_HASH){ sessionStorage.setItem('r1-ok','1'); document.getElementById('gate').remove(); return true; }
-  return false;
-}
-if (sessionStorage.getItem('r1-ok') === '1'){
-  window.addEventListener('DOMContentLoaded', () => document.getElementById('gate').remove());
-} else {
-  window.addEventListener('DOMContentLoaded', () => {
-    const pw = document.getElementById('pw');
-    pw.focus();
-    pw.addEventListener('keydown', async e => {
-      if (e.key === 'Enter' && !(await tryUnlock(pw.value))){
-        document.getElementById('pwmsg').textContent = 'Not quite.';
-        pw.value = '';
-      }
-    });
-  });
-}
-const DIR = 'creatives/round1/';
-const CODE = 'BAI-01-01';
+/* Rounds. Each variant carries its own code, because round two mixes codes. */
 /* UTM scheme: content is derived from code+variant so it cannot drift.
    Campaign name is the one hand-set value; confirm with Yash. */
 const UTM = {source: 'facebook', medium: 'paid-social', campaign: 'au-launch'};
-const VARIANTS = [
-  {key: 'v1-chef', label: 'Chef',
-   fb: {primary: "Pays, super, PAYG and payslips, handled in one pay run. Payroll that takes payday off your plate.",
-        headline: "Payroll, sorted in one tap",
-        desc: "Try PaySauce for free.",
-        cta: "Learn more", url: "paysauce.com"}},
-  {key: 'v1-framer', label: 'Framer',
-   fb: {primary: "Payday, payments and filing handled, so it's off your mind by morning tea. Built for small business.",
-        headline: "That's payroll sorted",
-        desc: "Payroll made easy.",
-        cta: "Learn more", url: "paysauce.com"}},
+const CONTROL_FB = {
+  primary: "Pays, super, PAYG and payslips, handled in one pay run. Payroll that takes payday off your plate.",
+  headline: "Payroll, sorted in one tap",
+  desc: "Try PaySauce for free.",
+  cta: "Learn more", url: "paysauce.com"
+};
+/* Round two keeps the control's opening sentence and changes only the closing one. Round one
+   stays on its original line, so the two rounds are not silently rewritten together. */
+const ROUND2_FB = Object.assign({}, CONTROL_FB, {
+  primary: "Pays, super, PAYG and payslips, handled in one pay run. Payroll that makes payday 10x easier."
+});
+const ROUNDS = [
+  {id: 'round-1', label: 'Round 1', dir: 'creatives/round1/', code: 'BAI-01-01', variants: [
+    {code: 'BAI-01-01', key: 'v1-chef', label: 'Chef', fb: CONTROL_FB},
+    {code: 'BAI-01-01', key: 'v1-framer', label: 'Framer',
+     fb: {primary: "Payday, payments and filing handled, so it's off your mind by morning tea. Built for small business.",
+          headline: "That's payroll sorted",
+          desc: "Payroll made easy.",
+          cta: "Learn more", url: "paysauce.com"}},
+  ]},
+  {id: 'round-2', label: 'Round 2', dir: 'creatives/round2/', code: 'BAI-01-02 + BAI-01-03', variants: [
+    {code: 'BAI-01-02', key: 'v2-salon', label: 'Salon', fb: ROUND2_FB},
+    {code: 'BAI-01-03', key: 'v3-bookkeeper', label: 'Bookkeeper', fb: ROUND2_FB},
+  ]},
 ];
 const SIZES = [
   {key: '1x1',  label: '1:1',  file: '1x1_1080x1080'},
   {key: '4x5',  label: '4:5',  file: '4x5_1080x1350'},
   {key: '9x16', label: '9:16', file: '9x16_1080x1920'},
 ];
-let vi = 0, si = 0;
+let ri = 0, vi = 0, si = 0;
+const hashRound = ROUNDS.findIndex(r => r.id === location.hash.slice(1));
+if (hashRound >= 0) ri = hashRound;
+const R = () => ROUNDS[ri];
+const VARIANTS = () => R().variants;
 const $ = id => document.getElementById(id);
-const fileFor = (v, s) => CODE + '-' + VARIANTS[v].key + '_' + SIZES[s].file + '.png';
-const srcFor = (v, s) => DIR + fileFor(v, s);
+const fileFor = (v, s) => VARIANTS()[v].code + '-' + VARIANTS()[v].key + '_' + SIZES[s].file + '.png';
+const srcFor = (v, s) => R().dir + fileFor(v, s);
 
 /* tabbed gallery: one cast member at a time, all three sizes */
 const gal = $('gallery');
 const meta = $('meta');
 function render(){
+  const tabs = $('rtabs');
+  tabs.innerHTML = '';
+  ROUNDS.forEach((r, i) => {
+    const b = document.createElement('button');
+    b.textContent = r.label;
+    if (i === ri) b.className = 'on';
+    b.addEventListener('click', () => { ri = i; vi = 0; location.hash = r.id; render(); });
+    tabs.appendChild(b);
+  });
+
   const list = $('vlist');
   list.innerHTML = '';
-  VARIANTS.forEach((V, v) => {
+  VARIANTS().forEach((V, v) => {
     const b = document.createElement('button');
     b.textContent = V.label;
     if (v === vi) b.className = 'on';
@@ -220,7 +212,7 @@ function render(){
     list.appendChild(b);
   });
 
-  const V = VARIANTS[vi], v = vi;
+  const V = VARIANTS()[vi], v = vi;
   let tiles = '';
   SIZES.forEach((S, s) => {
     tiles += '<div class="tile">' +
@@ -235,10 +227,12 @@ function render(){
   });
   gal.innerHTML = '<div class="vrow">' + tiles + '</div>';
 
-  const utmContent = (CODE + '-' + V.key).toLowerCase();
+  const utmContent = (V.code + '-' + V.key).toLowerCase();
   const tagged = 'https://www.' + V.fb.url + '/?utm_source=' + UTM.source +
     '&utm_medium=' + UTM.medium + '&utm_campaign=' + UTM.campaign + '&utm_content=' + utmContent;
   meta.innerHTML =
+    '<h2>Job</h2>' +
+    '<div id="jobcode">' + V.code + ' &middot; ' + V.key + '</div>' +
     '<h2>Facebook post</h2>' +
     '<div class="mlabel">Primary text</div><div class="mval">' + V.fb.primary + '</div>' +
     '<div class="mlabel">Headline</div><div class="mval">' + V.fb.headline + '</div>' +
@@ -276,7 +270,7 @@ function dummyPost(h){
 const AVATAR = '<span class="avatar" style="background:' + CHILLI + '; display:flex; align-items:center; justify-content:center"><img src="assets/splodge--white.svg" style="width:58%; height:58%"></span>';
 function openMock(url){
   const phone = $('phone'), feed = $('feed');
-  const fb = VARIANTS[vi].fb;
+  const fb = VARIANTS()[vi].fb;
   if (SIZES[si].key === '9x16'){
     phone.classList.add('story');
     feed.innerHTML =
@@ -314,8 +308,9 @@ function openMock(url){
 function closeMock(){ $('mockview').classList.remove('open'); }
 $('mockclose').addEventListener('click', closeMock);
 $('mockview').addEventListener('click', e => { if (e.target === $('mockview')) closeMock(); });
+document.addEventListener('click', e => {
+});
 window.addEventListener('keydown', e => {
-  if (e.code === 'Escape') closeMock();
   if (e.code === 'ArrowLeft' || e.code === 'ArrowRight'){ vi = (vi + 1) % VARIANTS.length; render(); }
 });
 </script>
