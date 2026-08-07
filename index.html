@@ -22,13 +22,17 @@
   .seg button:hover{background:#2e2e2b; color:#fff}
   .seg button.on{background:#f2f1ee; color:#1d1d1b; font-weight:650}
 
-  #rtabs{flex:none; display:flex; gap:2px; padding:0 40px; margin-bottom:26px;
-    border-bottom:1px solid #3a3a37}
-  #rtabs button{background:none; border:none; border-bottom:2px solid transparent; color:#8f8e89;
     cursor:pointer; font:inherit; font-size:14px; font-weight:550; padding:11px 20px 10px}
   #rtabs button:hover{color:#dddcd7}
   #rtabs button.on{color:#fff; border-bottom-color:#f2f1ee}
   #jobcode{font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:13px; color:#e8e7e3; letter-spacing:.03em}
+
+  header{position:relative}
+  #rtabs{position:absolute; left:50%; transform:translateX(-50%); display:flex; gap:6px}
+  #rtabs button{background:none; border:1px solid #3a3a37; border-radius:999px; color:#c9c8c3;
+    cursor:pointer; font:inherit; font-size:13px; font-weight:500; padding:6px 16px}
+  #rtabs button:hover{background:#2e2e2b; color:#fff}
+  #rtabs button.on{background:#f2f1ee; border-color:#f2f1ee; color:#1d1d1b; font-weight:650}
 
   main{flex:1; min-height:0; display:flex; gap:44px; padding:0 40px}
   #vlist{width:170px; flex:none; padding-top:6px}
@@ -133,9 +137,9 @@
   </div>
   <header>
     <div id="title">PaySauce Meta Ads</div>
+    <div id="rtabs"></div>
     <div id="spacer"></div>
   </header>
-  <div id="rtabs"></div>
   <main>
     <nav id="vlist"></nav>
     <div id="gallery"></div>
