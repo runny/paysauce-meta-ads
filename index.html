@@ -124,6 +124,13 @@
 </style>
 </head>
 <body>
+  <div id="gate" style="position:fixed; inset:0; background:#1d1d1b; z-index:100; display:flex; align-items:center; justify-content:center">
+    <div style="text-align:center">
+      <div style="font-size:18px; font-weight:700; margin-bottom:18px">PaySauce · Creative</div>
+      <input id="pw" type="password" placeholder="Password" autocomplete="off" style="background:#242422; border:1px solid #3a3a37; border-radius:9px; color:#f2f1ee; font-size:15px; padding:11px 14px; width:240px; text-align:center; outline:none">
+      <div id="pwmsg" style="color:#8f8e89; font-size:12px; margin-top:12px; height:16px"></div>
+    </div>
+  </div>
   <header>
     <div id="title">PaySauce Meta Ads</div>
     <div id="spacer"></div>
@@ -145,6 +152,27 @@
 
 <script>
 "use strict";
+const GATE_HASH = "db8cf3338c29849e56bf0b0c9aa8eeaa1a87d168f31979fd533e2ad9cd45a103";
+async function tryUnlock(v){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
+  const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+  if (hex === GATE_HASH){ sessionStorage.setItem('r1-ok','1'); document.getElementById('gate').remove(); return true; }
+  return false;
+}
+if (sessionStorage.getItem('r1-ok') === '1'){
+  window.addEventListener('DOMContentLoaded', () => document.getElementById('gate').remove());
+} else {
+  window.addEventListener('DOMContentLoaded', () => {
+    const pw = document.getElementById('pw');
+    pw.focus();
+    pw.addEventListener('keydown', async e => {
+      if (e.key === 'Enter' && !(await tryUnlock(pw.value))){
+        document.getElementById('pwmsg').textContent = 'Not quite.';
+        pw.value = '';
+      }
+    });
+  });
+}
 /* Rounds. Each variant carries its own code, because round two mixes codes. */
 /* UTM scheme: content is derived from code+variant so it cannot drift.
    Campaign name is the one hand-set value; confirm with Yash. */
