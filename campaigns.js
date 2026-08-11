@@ -4,37 +4,37 @@
    never say different things. Before 11 Aug 2026 they were two hand-maintained copies of the same
    JS and they drifted within a day.
 
-   IA is CAMPAIGN first (Aaron, 11 Aug 2026), because that is how the account is structured and how
-   Yash works: pick a campaign, see its ads, take the art and the words. Rounds were how the creative
-   was MADE; campaigns are how it RUNS, and the delivery page is for running it.
+   ⚠ NO COMMENTARY IN HERE (Aaron, 11 Aug 2026). Results, history, caveats and reasoning were added
+   once and removed: the delivery page is where art and words are picked up, and analysis on it
+   confuses the job. A campaign has a name and a list of ads. Performance lives on the performance
+   pages; reasoning lives in conversation.
 
-   THE NUMBERING IS A LEDGER, NOT A LABEL. Campaign 1 is not something we are about to build: it is
-   what ran from 5 to 11 August and answered its question. Numbering it that way keeps the sequence
-   honest and puts each result next to the work that follows from it.
+   THE TRACKING CODE IS THREE PARTS: BE-{campaign}-{slug}, e.g. BE-c2-chef.
 
-   Every campaign states the ONE question it answers. If a campaign cannot state its question in a
-   sentence, it is two campaigns.
+   BE  so one filter isolates this inventory, which is the whole point of the convention.
+   c2  because the same PNG in two campaigns is two different ads (different words, different
+       destination, learning from zero), and without it one filter merges them into one row.
+   chef  the creative, in a word.
 
-   ⚠ AN AD IS ARTWORK PLUS COPY PLUS DESTINATION, NOT ARTWORK (Aaron, 11 Aug 2026). Chef appears in
-   campaign 1 and again in campaign 2 sharing only the PNG: different words, different conversion
-   location, different ad set, and a learning history that starts from zero. So the BE code carries
-   the CAMPAIGN as well as the job, or one filter on utm_content silently merges two different ads
-   into one row. Codes read BE-{job}-{variant}-{campaign}-st.
+   It was BE-bai-01-01-v1-chef-c2-st for about an hour on 11 Aug 2026: eight segments to say "chef,
+   campaign 2". The job code and the variant belong on the delivery page, where you can see them
+   next to the art; the format suffix said "static" when everything is static. A code that has to be
+   typed or read in a report earns its length or loses it.
 
-   ⚠ Ad-level copy here is what Yash pastes. One primary text per ad: Meta's Advantage+ writes the
-   variations, and on 5 to 11 Aug its versions ran 1.13% link CTR against our supplied line's 0.66%
-   at the same CPM. Do not supply alternates. */
+   ⚠ One primary text per ad. Meta's Advantage+ writes the variations, and on 5 to 11 Aug its
+   versions ran 1.13% link CTR against our supplied line's 0.66% at the same CPM. Do not add
+   alternates here. */
 
 window.CAMPAIGNS = {
   updated: "2026-08-11",
 
-  /* Shared by every LIVE campaign, so it is stated once and cannot drift per row. */
+  /* Stated once, rendered on every ad, so it cannot drift row to row. */
   standing: {
     destination: "Instant form only. Please do not attach a website URL to the ad itself: it changes the conversion location to \"website and instant form\" and splits delivery optimisation across a path that has produced no leads.",
     thankYouLink: "https://www.paysauce.com/au",
-    adSet: "One cold ad set per campaign. Audience is your call: broad, or the lookalike. In the account's own history the open ad set bought leads at about $24 against about $36 for the targeted one.",
+    adSet: "One cold ad set per campaign.",
     budget: "$200 a day per campaign.",
-    freeze: "Leave alone for 14 days. Any real edit (budget, audience, creative, optimisation) restarts Meta's learning from zero and voids the read.",
+    freeze: "Leave alone for 14 days. Any real edit (budget, audience, creative, optimisation) restarts Meta's learning from zero.",
     naming: "Paste the exact filename as the ad name, including the ratio.",
     text: "One primary text per ad, as written. Advantage+ text generation stays ON: Meta writes the variations."
   },
@@ -42,89 +42,71 @@ window.CAMPAIGNS = {
   campaigns: [
     {
       id: "campaign-1",
-      label: "Campaign 1",
-      status: "concluded",
-      statusLabel: "Ran 5 to 11 Aug · switching off",
-      question: "Which cast connects?",
-      detail: "The first live round: one composition, four cast members, run to find out whether who is in the picture changes anything.",
-      result: "It does not. Chef ran 0.72% link CTR and framer 0.74% across the only two fair samples, and those are the same number. Salon and bookkeeper sit further apart but on 1,500 to 1,800 impressions each, where four clicks moves the rate. Read it alongside a setup that was faulty throughout: a website-and-form destination splitting the optimisation, square and 4:5 files serving into vertical placements, events split across two ad sets, and a learning reset on the Monday. None of that learning is worth keeping, which is why chef re-enters campaign 2 clean rather than being cited as a historic number.",
-      note: "History. The art here is superseded; campaign 2 carries what replaces it.",
+      name: "Campaign 1 · Cast",
       ads: [
-        { code: "BAI-01-01", key: "v1-chef", label: "Chef", approach: "Cast: head chef" },
-        { code: "BAI-01-01", key: "v2-framer", label: "Framer", approach: "Cast: picture framer · paused day two" },
-        { code: "BAI-01-02", key: "v2-salon", label: "Salon", approach: "Cast: salon owner" },
-        { code: "BAI-01-03", key: "v3-bookkeeper", label: "Bookkeeper", approach: "Cast: bookkeeper" }
+        {
+          code: "BAI-01-01", key: "v1-chef", slug: "chef", label: "Chef", dir: "creatives/campaign-1/",
+          primary: "Pays, super, PAYG and payslips, handled in one pay run. Payroll that takes payday off your plate.",
+          headline: "Payroll, sorted in one tap", desc: "Get started.", cta: "Learn more"
+        },
+        {
+          code: "BAI-01-01", key: "v2-framer", slug: "framer", label: "Framer", dir: "creatives/campaign-1/",
+          primary: "Payday, payments and filing handled, so it's off your mind by morning tea. Built for small business.",
+          headline: "That's payroll sorted", desc: "Get started.", cta: "Learn more"
+        },
+        {
+          code: "BAI-01-02", key: "v2-salon", slug: "salon", label: "Salon", dir: "creatives/campaign-1/",
+          primary: "Pays, super, PAYG and payslips, handled in one pay run. Done in one click.",
+          headline: "Payroll, sorted in one tap", desc: "Get started.", cta: "Learn more"
+        },
+        {
+          code: "BAI-01-03", key: "v3-bookkeeper", slug: "bookkeeper", label: "Bookkeeper", dir: "creatives/campaign-1/",
+          primary: "Pays, super, PAYG and payslips, handled in one pay run. Done in one click.",
+          headline: "Payroll, sorted in one tap", desc: "Get started.", cta: "Learn more"
+        }
       ]
     },
 
     {
       id: "campaign-2",
-      label: "Campaign 2",
-      status: "build",
-      statusLabel: "To build",
-      question: "Which approach wins?",
-      detail: "Three genuinely different ways of making the same point: a person on a brand field, a photographed scene with the product in the room, and a diagram with no photography at all. The answer tells us what KIND of ad to make next, which is a bigger question than which face or which headline.",
-      caveat: "Each approach carries its own words, and its headline is set into the artwork, so this compares whole ads rather than isolating composition. Deliberate: holding the copy constant would mean re-rendering every piece to a shared headline. Read a win as \"this ad works\", not \"this composition works\".",
+      name: "Campaign 2 · Approach",
       ads: [
         {
-          code: "BAI-01-01", key: "v1-chef", label: "Chef", dir: "creatives/campaign-2/",
-          approach: "Person on a brand field",
+          code: "BAI-01-01", key: "v1-chef", slug: "chef", label: "Chef", dir: "creatives/campaign-2/",
           primary: "Pays, super, PAYG and payslips, handled in one pay run. Payroll that takes payday off your plate.",
-          headline: "Payroll, sorted in one tap",
-          desc: "Get started.",
-          cta: "Learn more",
-          note: "Same PNG as campaign 1, and nothing else: new copy, new destination, new ad set, learning from zero. Its first fair run."
+          headline: "Payroll, sorted in one tap", desc: "Get started.", cta: "Learn more"
         },
         {
-          code: "SCN-01", key: "v1-desk", label: "The desk", dir: "creatives/campaign-2/",
-          approach: "Photographed scene, product in the room",
+          code: "SCN-01", key: "v1-desk", slug: "desk", label: "The desk", dir: "creatives/campaign-2/",
           primary: "Staff, tax and super all sent at once. Nothing to transfer, nothing to upload.",
-          headline: "Payday made simple.",
-          desc: "Get started.",
-          cta: "Learn more"
+          headline: "Payday made simple.", desc: "Get started.", cta: "Learn more"
         },
         {
-          code: "SCN-04", key: "v1-without-banking", label: "Without the banking", dir: "creatives/campaign-2/",
-          approach: "Diagram, no photography",
+          code: "SCN-04", key: "v1-without-banking", slug: "banking", label: "Without the banking", dir: "creatives/campaign-2/",
           primary: "Press it once. The transfers happen on their own, to your staff, the ATO and every super fund.",
-          headline: "Payday, without the banking.",
-          desc: "Get started.",
-          cta: "Learn more"
+          headline: "Payday, without the banking.", desc: "Get started.", cta: "Learn more"
         }
       ]
     },
 
     {
       id: "campaign-3",
-      label: "Campaign 3",
-      status: "build",
-      statusLabel: "To build",
-      question: "Does naming the trade help?",
-      detail: "One layout, held to the pixel, with only the room and the small line changing. The generic version runs alongside the two named ones as the comparator, so any gap between them is a fact about the audience rather than about the design.",
+      name: "Campaign 3 · Trade",
       ads: [
         {
-          code: "SCN-01", key: "v3-in-full", label: "Generic", dir: "creatives/campaign-3/",
-          approach: "Small business, unnamed",
+          code: "SCN-01", key: "v3-in-full", slug: "generic", label: "Generic", dir: "creatives/campaign-3/",
           primary: "Staff, tax and super all sent at once. Nothing to transfer, nothing to upload.",
-          headline: "Payday made simple.",
-          desc: "Get started.",
-          cta: "Learn more"
+          headline: "Payday made simple.", desc: "Get started.", cta: "Learn more"
         },
         {
-          code: "SCN-02", key: "v1-cafe", label: "Cafes", dir: "creatives/campaign-3/",
-          approach: "Trade named: cafes",
+          code: "SCN-02", key: "v1-cafe", slug: "cafe", label: "Cafes", dir: "creatives/campaign-3/",
           primary: "Everyone paid at once. Super and ATO done. No transfers, no bank files.",
-          headline: "Payday made simple.",
-          desc: "Get started.",
-          cta: "Learn more"
+          headline: "Payday made simple.", desc: "Get started.", cta: "Learn more"
         },
         {
-          code: "SCN-02", key: "v2-shop", label: "Shops", dir: "creatives/campaign-3/",
-          approach: "Trade named: shops",
+          code: "SCN-02", key: "v2-shop", slug: "shop", label: "Shops", dir: "creatives/campaign-3/",
           primary: "Everyone paid at once. Super and ATO done. No transfers, no bank files.",
-          headline: "Payday made simple.",
-          desc: "Get started.",
-          cta: "Learn more"
+          headline: "Payday made simple.", desc: "Get started.", cta: "Learn more"
         }
       ]
     }
