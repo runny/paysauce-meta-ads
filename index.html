@@ -194,8 +194,18 @@ const CONTROL_FB = {
 };
 /* Round two keeps the control's opening sentence and changes only the closing one. Round one
    stays on its original line, so the two rounds are not silently rewritten together. */
+/* Round two text rewritten 11 Aug 2026: six distinct propositions, identical across salon and
+   bookkeeper so the cast stays the only variable. Load all six as the ad's text options. */
+const ROUND2_BODIES = [
+  "Pays, super, PAYG and payslips, handled in one pay run. Done in one click.",
+  "One click pays everyone: your staff, the ATO and the super fund. No transfers to make, no bank file to upload.",
+  "\u201cWe can process the pay within five minutes each fortnight.\u201d A customer\u2019s words, not ours.",
+  "Super goes with every pay run. Since the ATO closed its free clearing house in July, that matters more than it used to.",
+  "You\u2019re set up one-to-one by a qualified bookkeeper, and there\u2019s a real person to talk to when you want one.",
+  "$50 a month plus $5 per employee. No tiers, no add-ons, and a 90-day money-back guarantee."
+];
 const ROUND2_FB = Object.assign({}, CONTROL_FB, {
-  primary: "Pays, super, PAYG and payslips, handled in one pay run. Payroll that makes payday 10x easier."
+  primary: ROUND2_BODIES[0], bodies: ROUND2_BODIES
 });
 const ROUNDS = [
   {id: 'round-1', label: 'Round 1', dir: 'creatives/round1/', code: 'BAI-01-01', variants: [
@@ -271,7 +281,14 @@ function render(){
     '<h2>Job</h2>' +
     '<div id="jobcode">' + V.code + ' &middot; ' + V.key + '</div>' +
     '<h2>Facebook post</h2>' +
-    '<div class="mlabel">Primary text</div><div class="mval">' + V.fb.primary + '</div>' +
+    (V.fb.bodies
+      ? '<div class="mlabel">Primary text options (load all six as the text options, replacing the ' +
+        'current set; please don\'t add auto-suggested rewrites)</div>' +
+        V.fb.bodies.map(function(b){
+          return '<div class="filerow"><code>' + b + '</code>' +
+                 '<button class="copyurl" data-url="' + b.replace(/"/g, '&quot;') + '">Copy</button></div>';
+        }).join('')
+      : '<div class="mlabel">Primary text</div><div class="mval">' + V.fb.primary + '</div>') +
     '<div class="mlabel">Headline</div><div class="mval">' + V.fb.headline + '</div>' +
     '<div class="mlabel">Description</div><div class="mval">' + V.fb.desc + '</div>' +
     '<div class="mlabel">Call to action</div><div class="mval"><span class="ctachip">' + V.fb.cta + '</span></div>' +
