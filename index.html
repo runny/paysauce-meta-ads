@@ -190,7 +190,7 @@ const CONTROL_FB = {
   primary: "Pays, super, PAYG and payslips, handled in one pay run. Payroll that takes payday off your plate.",
   headline: "Payroll, sorted in one tap",
   desc: "Get started.",
-  cta: "Learn more", url: "paysauce.com"
+  cta: "Learn more", url: "www.paysauce.com/au"
 };
 /* Round two keeps the control's opening sentence and changes only the closing one. Round one
    stays on its original line, so the two rounds are not silently rewritten together. */
@@ -214,7 +214,7 @@ const ROUNDS = [
      fb: {primary: "Payday, payments and filing handled, so it's off your mind by morning tea. Built for small business.",
           headline: "That's payroll sorted",
           desc: "Payroll made easy.",
-          cta: "Learn more", url: "paysauce.com"}},
+          cta: "Learn more", url: "www.paysauce.com/au"}},
   ]},
   {id: 'round-2', label: 'Round 2', dir: 'creatives/round2/', code: 'BAI-01-02 + BAI-01-03', variants: [
     {code: 'BAI-01-02', key: 'v2-salon', label: 'Salon', fb: ROUND2_FB},
@@ -275,7 +275,11 @@ function render(){
   gal.innerHTML = '<div class="vrow">' + tiles + '</div>';
 
   const utmContent = beCode(V);
-  const tagged = 'https://www.' + V.fb.url + '/?utm_source=' + UTM.source +
+  /* a row's url may carry a path or scheme; join the query with whatever is already there */
+  const rawUrl = V.fb.url;
+  const base = /^https?:\/\//.test(rawUrl) ? rawUrl : 'https://' + rawUrl;
+  const sep = base.includes('?') ? '&' : '?';
+  const tagged = base + sep + 'utm_source=' + UTM.source +
     '&utm_medium=' + UTM.medium + '&utm_content=' + utmContent;
   meta.innerHTML =
     '<h2>Job</h2>' +
