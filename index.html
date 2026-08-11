@@ -3,63 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PaySauce Meta Ads</title>
+<title>PaySauce Meta Ads &middot; Delivery</title>
 <style>
+  /* The delivery page. ONE template, rendered twice: here from campaigns.js, and in the public repo
+     from the copy publish-delivery.py pushes. Never hand-edit the repo version.
+
+     Campaign first, then ads. The rounds view lives on in the Creative Preview page, where
+     work-in-progress belongs; this page is only about what is shipping. */
   *{box-sizing:border-box; margin:0; padding:0}
   html,body{height:100%}
   body{background:#1d1d1b; color:#f2f1ee; display:flex; flex-direction:column;
     font:15px/1.5 -apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
     -webkit-font-smoothing:antialiased; overflow:hidden}
 
-  header{flex:none; display:flex; align-items:center; gap:14px; padding:40px}
-  #title{font-size:22px; font-weight:700; letter-spacing:-.01em}
-  #round{background:#3a3a37; color:#d9d8d3; border-radius:999px; font-size:14px; padding:5px 14px}
+  header{flex:none; display:flex; align-items:baseline; gap:16px; padding:34px 40px 22px}
+  #title{font-size:21px; font-weight:700; letter-spacing:-.01em}
+  #sub{color:#8f8e89; font-size:14px}
   #spacer{flex:1}
-  .seg{display:flex; border:1px solid #3a3a37; border-radius:9px; overflow:hidden}
-  .seg button{background:none; border:none; color:#c9c8c3; cursor:pointer; font-size:13px;
-    padding:7px 16px; font-weight:500}
-  .seg button + button{border-left:1px solid #3a3a37}
-  .seg button:hover{background:#2e2e2b; color:#fff}
-  .seg button.on{background:#f2f1ee; color:#1d1d1b; font-weight:650}
+  #stamp{color:#6f6e6a; font-size:12px; font-family:"SF Mono",ui-monospace,Menlo,monospace}
+  /* The publish control states what is true before it offers an action: nothing to publish, or
+     these many changes are not live yet. A button with no state just invites blind pressing. */
+  #pubwrap{display:flex; align-items:center; gap:12px}
+  #pubstate{font-size:12px; color:#6f6e6a; text-align:right; line-height:1.35; max-width:230px}
+  #pub{background:none; border:1px solid #3a3a37; border-radius:999px; color:#8f8e89;
+    font:inherit; font-size:13px; font-weight:650; padding:8px 20px; cursor:not-allowed}
+  #pub.ready{border-color:#C9A227; color:#F0D67A; cursor:pointer}
+  #pub.ready:hover{background:#C9A227; border-color:#C9A227; color:#1d1d1b}
+  #pub.busy{cursor:progress; opacity:.6}
+  #pubwrap.dirty #pubstate{color:#F0D67A}
+  #pubwrap.dirty::before{content:""; width:7px; height:7px; border-radius:50%; background:#F0D67A}
 
-    cursor:pointer; font:inherit; font-size:14px; font-weight:550; padding:11px 20px 10px}
-  #rtabs button:hover{color:#dddcd7}
-  #rtabs button.on{color:#fff; border-bottom-color:#f2f1ee}
-  #jobcode{font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:13px; color:#e8e7e3; letter-spacing:.03em}
+  #tabs{flex:none; display:flex; gap:8px; padding:0 40px 20px}
+  #tabs button{background:none; border:1px solid #3a3a37; border-radius:999px; color:#c9c8c3;
+    cursor:pointer; font:inherit; font-size:14px; padding:8px 18px}
+  #tabs button:hover{border-color:#575652; color:#fff}
+  #tabs button.on{background:#f2f1ee; border-color:#f2f1ee; color:#1d1d1b; font-weight:650}
+  #tabs button .st{display:block; font-size:11px; font-weight:400; opacity:.65; margin-top:1px}
+  .qbox .res{margin-top:11px; padding-top:11px; border-top:1px solid #34342f; color:#a2a19c;
+    font-size:12.5px; line-height:1.55}
+  .qbox .res b{color:#e8e7e3}
+  #adlist button.hist{color:#6f6e6a}
+  .histbox{max-width:420px; text-align:center; color:#8f8e89}
+  .histbox .h1{font-size:15px; font-weight:650; color:#c9c8c3}
+  .histbox p{margin-top:10px; font-size:13px; line-height:1.6}
 
-  header{position:relative}
-  #rtabs{position:absolute; left:50%; transform:translateX(-50%); display:flex; gap:6px}
-  #rtabs button{background:none; border:1px solid #3a3a37; border-radius:999px; color:#c9c8c3;
-    cursor:pointer; font:inherit; font-size:13px; font-weight:500; padding:6px 16px}
-  #rtabs button:hover{background:#2e2e2b; color:#fff}
-  #rtabs button.on{background:#f2f1ee; border-color:#f2f1ee; color:#1d1d1b; font-weight:650}
+  main{flex:1; min-height:0; display:flex; gap:40px; padding:0 40px 34px}
+  #left{width:230px; flex:none; overflow-y:auto; scrollbar-width:none}
+  #left::-webkit-scrollbar{display:none}
+  .qbox{border:1px solid #34342f; border-radius:12px; padding:16px 17px; margin-bottom:20px}
+  .qbox .q{font-size:15px; font-weight:650; line-height:1.35}
+  .qbox .d{margin-top:9px; color:#a2a19c; font-size:12.5px; line-height:1.55}
+  #adlist button{display:block; width:100%; text-align:left; background:none; border:none;
+    color:#8f8e89; font:inherit; font-size:15px; padding:9px 0; cursor:pointer}
+  #adlist button:hover{color:#dddcd7}
+  #adlist button.on{color:#fff; font-weight:650}
+  #adlist .ap{display:block; font-size:11.5px; color:#6f6e6a; font-weight:400; margin-top:1px}
 
-  main{flex:1; min-height:0; display:flex; gap:44px; padding:0 40px}
-  #vlist{width:170px; flex:none; padding-top:6px}
-  #vlist button{display:block; width:100%; text-align:left; background:none; border:none;
-    color:#8f8e89; font:inherit; font-size:15px; padding:8px 0; cursor:pointer}
-  #vlist button:hover{color:#dddcd7}
-  #vlist button.on{color:#fff; font-weight:650}
-  #gallery{flex:1; min-width:0; display:flex; align-items:center; justify-content:center;
-    padding-bottom:24px}
-  .vrow{display:flex; gap:44px; align-items:flex-start; justify-content:center}
-  /* the 9:16 must fit the viewport; its height dictates the shared tile width */
-  .tile{flex:none; width:min(calc((100vh - 310px) * 0.5625), calc((100% - 88px) / 3)); min-width:0}
-  .tile img{width:100%; display:block; cursor:pointer; box-shadow:0 18px 50px rgba(0,0,0,.45)}
+  #gallery{flex:1; min-width:0; display:flex; align-items:center; justify-content:center; padding-bottom:14px}
+  .vrow{display:flex; gap:38px; align-items:flex-start; justify-content:center}
+  .tile{flex:none; width:min(calc((100vh - 340px) * 0.5625), calc((100% - 76px) / 3)); min-width:0}
+  .tile img{width:100%; display:block; box-shadow:0 18px 50px rgba(0,0,0,.45)}
   .tmeta{display:flex; align-items:center; justify-content:space-between; margin-top:9px}
   .tcap{color:#8f8e89; font-size:11px; font-family:"SF Mono",ui-monospace,Menlo,monospace}
-  .tbtns{display:flex; gap:6px}
-  .tbtns a,.tbtns button{display:flex; align-items:center; justify-content:center; width:28px; height:28px;
-    background:none; border:1px solid #3a3a37; border-radius:7px; color:#c9c8c3; cursor:pointer;
-    text-decoration:none; padding:0}
-  .tbtns a:hover,.tbtns button:hover{border-color:#575652; color:#fff}
+  .tbtns a{display:flex; align-items:center; justify-content:center; width:28px; height:28px;
+    border:1px solid #3a3a37; border-radius:7px; color:#c9c8c3; text-decoration:none}
+  .tbtns a:hover{border-color:#575652; color:#fff}
   .tbtns svg{width:14px; height:14px}
 
-  #meta{width:330px; flex:none; overflow-y:auto; padding-bottom:48px; scrollbar-width:none}
+  #meta{width:330px; flex:none; overflow-y:auto; padding-bottom:40px; scrollbar-width:none}
   #meta::-webkit-scrollbar{display:none}
   #meta h2{font-size:11px; font-weight:650; letter-spacing:.1em; text-transform:uppercase;
-    color:#8f8e89; margin:26px 0 10px}
+    color:#8f8e89; margin:24px 0 10px}
   #meta h2:first-child{margin-top:0}
+  #jobcode{font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:12.5px; color:#dddcd7;
+    background:#242422; border:1px solid #3a3a37; border-radius:8px; padding:9px 11px}
+  .mlabel{color:#8f8e89; font-size:12px; margin:14px 0 4px}
+  .mval{color:#e8e7e3; font-size:14px; line-height:1.55}
+  .ctachip{display:inline-block; background:#3a3a37; border-radius:7px; padding:5px 12px;
+    font-size:13px; font-weight:600}
   .filerow{display:flex; gap:8px; align-items:center}
   .filerow code{flex:1; font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:12px;
     color:#dddcd7; background:#242422; border:1px solid #3a3a37; border-radius:8px;
@@ -67,322 +88,200 @@
   .filerow button{background:none; border:1px solid #3a3a37; border-radius:8px; color:#f2f1ee;
     font-size:12px; padding:8px 12px; cursor:pointer}
   .filerow button:hover{border-color:#575652}
-  .mlabel{color:#8f8e89; font-size:12px; margin:14px 0 4px}
-  .mval{color:#e8e7e3; font-size:14px; line-height:1.55}
-  .ctachip{display:inline-block; background:#3a3a37; border-radius:7px; padding:5px 12px;
-    font-size:13px; font-weight:600}
-  .inlinecode{font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:12px; color:#dddcd7}
-
-  /* phone mock (light chrome) */
-  #mockview{position:fixed; inset:0; background:rgba(10,10,9,.92); z-index:40; display:none;
-    align-items:center; justify-content:center}
-  #mockview.open{display:flex}
-  #mockclose{position:absolute; top:28px; right:36px; background:none; border:none; color:#f2f1ee;
-    font-size:34px; font-weight:300; cursor:pointer; line-height:1}
-  #mockclose:hover{opacity:.7}
-  #phone{width:376px; height:min(812px, calc(100vh - 90px)); background:#fff; border-radius:44px;
-    border:1px solid #3a3a37; box-shadow:0 40px 120px rgba(0,0,0,.7); overflow:hidden;
-    display:flex; flex-direction:column; position:relative}
-  #statusbar{flex:none; height:44px; display:flex; align-items:center; justify-content:space-between;
-    padding:0 26px; color:#111; font-size:13px; font-weight:600; background:#fff}
-  #statusbar .pill{width:90px; height:22px; background:#000; border-radius:12px;
-    position:absolute; left:50%; transform:translateX(-50%); top:11px}
-  #feed{flex:1; overflow-y:auto; background:#f2f2f0; scrollbar-width:none}
-  #feed::-webkit-scrollbar{display:none}
-  .post{background:#fff; margin-bottom:8px}
-  .posthead{display:flex; align-items:center; gap:10px; padding:11px 14px}
-  .avatar{width:34px; height:34px; border-radius:50%; flex:none}
-  .pmeta .l1{height:9px; border-radius:5px; background:#dcdcda; width:110px; margin-bottom:5px; display:block}
-  .pmeta .l2{height:7px; border-radius:4px; background:#ebebe9; width:64px; display:block}
-  .pimg{background:#e6e6e4; width:100%}
-  .adimg{width:100%; display:block}
-  .primary{padding:0 14px 11px; color:#111; font-size:13.5px; line-height:1.45}
-  .linkcard{display:flex; align-items:center; justify-content:space-between; gap:12px;
-    background:#f0f0ee; padding:11px 14px}
-  .lc-left{display:flex; flex-direction:column; gap:2px; min-width:0}
-  .lc-url{color:#8a8a87; font-size:10.5px; letter-spacing:.02em}
-  .lc-head{color:#111; font-size:13.5px; font-weight:650; line-height:1.25}
-  .lc-desc{color:#8a8a87; font-size:12px; line-height:1.3}
-  .lc-cta{flex:none; background:#e4e6ea; color:#111; font-size:13px; font-weight:650;
-    border-radius:7px; padding:8px 14px}
-  .actions{display:flex; gap:16px; padding:11px 14px}
-  .actions i{width:20px; height:20px; border-radius:50%; border:2px solid #d7d7d5; display:block}
-  .cap{padding:0 14px 14px}
-  .cap .l1{height:8px; border-radius:4px; background:#e6e6e4; width:82%; margin-bottom:6px}
-  .cap .l2{height:8px; border-radius:4px; background:#e6e6e4; width:55%}
-  .adname{color:#111; font-size:13px; font-weight:650; line-height:1.2}
-  .adsub{color:#8a8a87; font-size:11px}
-  #phone.story{height:min(712px, calc(100vh - 90px))}
-  #phone.story #feed{overflow:hidden; position:relative}
-  .storyimg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
-  .storytop{position:absolute; top:0; left:0; right:0; padding:12px 14px; z-index:2}
-  .storybars{display:flex; gap:5px; margin-bottom:12px}
-  .storybars i{flex:1; height:2.5px; border-radius:2px; background:rgba(255,255,255,.35)}
-  .storybars i.on{background:#fff}
-  .storyhead{display:flex; align-items:center; gap:9px}
-  .storycta{position:absolute; left:0; right:0; bottom:24px; display:flex; flex-direction:column;
-    align-items:center; gap:8px; z-index:2; color:#fff}
-  .storycta .chev{font-size:18px}
-  .storycta .pillbtn{background:#fff; color:#111; font-size:13px; font-weight:650;
-    padding:9px 22px; border-radius:999px}
+  .standing{border-top:1px solid #2f2f2b; margin-top:26px; padding-top:18px}
+  .standing div{color:#a2a19c; font-size:12.5px; line-height:1.6; margin-bottom:11px}
+  .standing b{color:#e8e7e3; font-weight:650}
+  .note{border-left:2px solid #4a4a44; padding-left:12px; color:#a2a19c; font-size:12.5px;
+    line-height:1.6; margin-top:12px}
 </style>
 </head>
 <body>
-  <div id="gate" style="position:fixed; inset:0; background:#1d1d1b; z-index:100; display:flex; align-items:center; justify-content:center">
-    <div style="text-align:center">
-      <div style="font-size:18px; font-weight:700; margin-bottom:18px">PaySauce · Creative</div>
-      <input id="pw" type="password" placeholder="Password" autocomplete="off" style="background:#242422; border:1px solid #3a3a37; border-radius:9px; color:#f2f1ee; font-size:15px; padding:11px 14px; width:240px; text-align:center; outline:none">
-      <div id="pwmsg" style="color:#8f8e89; font-size:12px; margin-top:12px; height:16px"></div>
-    </div>
-  </div>
   <header>
     <div id="title">PaySauce Meta Ads</div>
-    <div id="rtabs"></div>
+    <div id="sub">what is shipping</div>
     <div id="spacer"></div>
+    <div id="pubwrap">
+      <div id="pubstate">checking…</div>
+      <button id="pub" disabled>Publish</button>
+    </div>
+    <div id="stamp"></div>
   </header>
+  <div id="tabs"></div>
   <main>
-    <nav id="vlist"></nav>
+    <div id="left">
+      <div class="qbox"><div class="q" id="cq"></div><div class="d" id="cd"></div></div>
+      <div id="adlist"></div>
+    </div>
     <div id="gallery"></div>
-    <aside id="meta"></aside>
+    <div id="meta"></div>
   </main>
 
-  <div id="mockview">
-    <button id="mockclose">&times;</button>
-    <div id="phone">
-      <div id="statusbar"><span>9:41</span><span class="pill"></span><span>&#9679;&#9679;&#9679;</span></div>
-      <div id="feed"></div>
-    </div>
-  </div>
-
+<script src="campaigns.js"></script>
 <script>
 "use strict";
-const GATE_HASH = "db8cf3338c29849e56bf0b0c9aa8eeaa1a87d168f31979fd533e2ad9cd45a103";
-async function tryUnlock(v){
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
-  const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
-  if (hex === GATE_HASH){ sessionStorage.setItem('r1-ok','1'); document.getElementById('gate').remove(); return true; }
-  return false;
-}
-if (sessionStorage.getItem('r1-ok') === '1'){
-  window.addEventListener('DOMContentLoaded', () => document.getElementById('gate').remove());
-} else {
-  window.addEventListener('DOMContentLoaded', () => {
-    const pw = document.getElementById('pw');
-    pw.focus();
-    pw.addEventListener('keydown', async e => {
-      if (e.key === 'Enter' && !(await tryUnlock(pw.value))){
-        document.getElementById('pwmsg').textContent = 'Not quite.';
-        pw.value = '';
-      }
-    });
-  });
-}
-/* Rounds. Each variant carries its own code, because round two mixes codes. */
-/* UTM scheme, rewritten 11 Aug 2026. We tag ONLY utm_content, in the BE- inventory format:
-   one analytics filter ("manual ad content begins with BE-") isolates this creative inventory.
-   utm_campaign belongs to whoever runs the campaign and is never set here.
-   These rounds run in the lead-form campaign, so the ad gets NO website URL at all: attaching one
-   switches the ad set to "website and instant form" and splits the optimisation. The tagged link
-   below goes on the instant form's THANK-YOU SCREEN only. */
-const UTM = {source: 'facebook', medium: 'paid-social'};
-const beCode = V => 'BE-' + (V.code + '-' + V.key + '-st').toLowerCase();
-const CONTROL_FB = {
-  primary: "Pays, super, PAYG and payslips, handled in one pay run. Payroll that takes payday off your plate.",
-  headline: "Payroll, sorted in one tap",
-  desc: "Get started.",
-  cta: "Learn more", url: "www.paysauce.com/au"
-};
-/* Round two keeps the control's opening sentence and changes only the closing one. Round one
-   stays on its original line, so the two rounds are not silently rewritten together. */
-/* Round two text rewritten 11 Aug 2026: six distinct propositions, identical across salon and
-   bookkeeper so the cast stays the only variable. Load all six as the ad's text options. */
-const ROUND2_PRIMARY =
-  "Pays, super, PAYG and payslips, handled in one pay run. Done in one click.";
-const ROUND2_FB = Object.assign({}, CONTROL_FB, { primary: ROUND2_PRIMARY });
-/* The CONTROL: Image #1, the account's strongest static, resupplied so every new ad is judged
-   against it under identical conditions. Art and headline are the original exactly; only a 4x5 was
-   ever made, so that is the one size. Body is the original minus two withdrawn lines. */
-const CONTROL_IMAGE1_FB = {
-  primary: "You didn't hire staff so you could spend Sunday night working out penalty rates. \ud83d\ude05\nPayday Super is here. Super must now be paid on EVERY pay run, not quarterly. If your payroll system isn't ready, the time to switch is NOW. \u26a1\n\nPaySauce does the hard stuff for you. \ud83d\udcaa\n\n\u2705 Award interpretation built in \u2014 Hospitality, Retail, General & IFA\n\u2705 Payday Super ready. Paid every payday. Automatic. Compliant.\n\u2705 Done in 10\u201315 minutes from your phone \ud83d\udcf1\n\u2705 Single Touch Payroll \u2014 automatic, no extra steps\n\u2705 Built for teams of 1 to 25 staff\n\nHere's what payday looks like with PaySauce \ud83d\udc47\n\nStaff clock in and out on the app.\nHours captured.\nAward rates applied.\nSuper calculated.\n\nYou review, approve, pay. Done before your coffee goes cold. \u2615\n\nNo spreadsheets. No Sunday stress. No expensive compliance mistakes.\n\n\ud83d\udc47 Get started today.",
-  headline: "Payroll Sorted in 15 Mins!",
-  desc: "Get started.",
-  cta: "Learn more", url: "www.paysauce.com/au"
-};
+const C = window.CAMPAIGNS, S = C.sizes;
+let ci = 0, ai = 0;
+const $ = (id) => document.getElementById(id);
+const CAMP = () => C.campaigns[ci];
+const AD = () => CAMP().ads[ai];
+const fileFor = (a, s) => a.code + '-' + a.key + '_' + S[s].file + '.png';
+const srcFor = (a, s) => a.dir + fileFor(a, s);
 
-const ROUNDS = [
-  {id: 'control', label: 'Control', dir: 'creatives/control/', code: 'CTL-01', dest: 'form',
-   sizes: [{key: '4x5', label: '4:5', file: '4x5_1080x1350'}],
-   variants: [
-    {code: 'CTL-01', key: 'image-1', label: 'Image #1', fb: CONTROL_IMAGE1_FB},
-  ]},
-  {id: 'round-1', label: 'Round 1', dir: 'creatives/round1/', code: 'BAI-01-01', variants: [
-    {code: 'BAI-01-01', key: 'v1-chef', label: 'Chef', fb: CONTROL_FB},
-    {code: 'BAI-01-01', key: 'v1-framer', label: 'Framer',
-     fb: {primary: "Payday, payments and filing handled, so it's off your mind by morning tea. Built for small business.",
-          headline: "That's payroll sorted",
-          desc: "Payroll made easy.",
-          cta: "Learn more", url: "www.paysauce.com/au"}},
-  ]},
-  {id: 'round-2', label: 'Round 2', dir: 'creatives/round2/', code: 'BAI-01-02 + BAI-01-03', variants: [
-    {code: 'BAI-01-02', key: 'v2-salon', label: 'Salon', fb: ROUND2_FB},
-    {code: 'BAI-01-03', key: 'v3-bookkeeper', label: 'Bookkeeper', fb: ROUND2_FB},
-  ]},
-];
-const SIZES = [
-  {key: '1x1',  label: '1:1',  file: '1x1_1080x1080'},
-  {key: '4x5',  label: '4:5',  file: '4x5_1080x1350'},
-  {key: '9x16', label: '9:16', file: '9x16_1080x1920'},
-];
-let ri = 0, vi = 0, si = 0;
-const hashRound = ROUNDS.findIndex(r => r.id === location.hash.slice(1));
-if (hashRound >= 0) ri = hashRound;
-const R = () => ROUNDS[ri];
-const SZ = () => R().sizes || SIZES;  /* the control only ever existed as a 4x5 */
-const VARIANTS = () => R().variants;
-const $ = id => document.getElementById(id);
-const fileFor = (v, s) => VARIANTS()[v].code + '-' + VARIANTS()[v].key + '_' + SZ()[s].file + '.png';
-const srcFor = (v, s) => R().dir + fileFor(v, s);
+const hash = C.campaigns.findIndex((x) => x.id === location.hash.slice(1));
+if (hash >= 0) ci = hash;
+/* Same-page anchors change the hash without reloading, so the page listens rather than reading it
+   once at load. That exact bug cost two rounds on the previous delivery page. */
+window.addEventListener('hashchange', () => {
+  const i = C.campaigns.findIndex((x) => x.id === location.hash.slice(1));
+  if (i >= 0 && i !== ci) { ci = i; ai = 0; render(); }
+});
 
-/* tabbed gallery: one cast member at a time, all three sizes */
-const gal = $('gallery');
-const meta = $('meta');
-function render(){
-  const tabs = $('rtabs');
-  tabs.innerHTML = '';
-  ROUNDS.forEach((r, i) => {
+function render() {
+  $('stamp').textContent = 'updated ' + C.updated;
+
+  const t = $('tabs'); t.innerHTML = '';
+  C.campaigns.forEach((c, i) => {
     const b = document.createElement('button');
-    b.textContent = r.label;
-    if (i === ri) b.className = 'on';
-    b.addEventListener('click', () => { ri = i; vi = 0; location.hash = r.id; render(); });
-    tabs.appendChild(b);
+    b.innerHTML = c.label + ' &middot; ' + c.question +
+      (c.statusLabel ? '<span class="st">' + c.statusLabel + '</span>' : '');
+    if (i === ci) b.className = 'on';
+    b.addEventListener('click', () => { ci = i; ai = 0; location.hash = c.id; render(); });
+    t.appendChild(b);
   });
 
-  const list = $('vlist');
-  list.innerHTML = '';
-  VARIANTS().forEach((V, v) => {
+  const c = CAMP(), done = c.status === 'concluded';
+  $('cq').textContent = c.question;
+  $('cd').innerHTML = c.detail +
+    (c.result ? '<div class="res"><b>Result.</b> ' + c.result + '</div>' : '') +
+    (c.caveat ? '<div class="res"><b>Reading it.</b> ' + c.caveat + '</div>' : '');
+  document.body.classList.toggle('concluded', done);
+
+  const list = $('adlist'); list.innerHTML = '';
+  CAMP().ads.forEach((a, i) => {
     const b = document.createElement('button');
-    b.textContent = V.label;
-    if (v === vi) b.className = 'on';
-    b.addEventListener('click', () => { vi = v; render(); });
+    b.innerHTML = a.label + '<span class="ap">' + a.approach + '</span>';
+    if (i === ai) b.classList.add('on');
+    if (done) b.classList.add('hist');
+    b.addEventListener('click', () => { ai = i; render(); });
     list.appendChild(b);
   });
 
-  const V = VARIANTS()[vi], v = vi;
-  let tiles = '';
-  SZ().forEach((S, s) => {
-    tiles += '<div class="tile">' +
-      '<img src="' + srcFor(v, s) + '" data-v="' + v + '" data-s="' + s + '" alt="">' +
-      '<div class="tmeta"><div class="tcap">' + S.label + ' &middot; ' + S.file.split('_')[1] + '</div>' +
-      '<div class="tbtns">' +
-      '<a href="' + srcFor(v, s) + '" download="' + fileFor(v, s) + '" title="Download">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></a>' +
-      '<button data-v="' + v + '" data-s="' + s + '" title="Mobile preview">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></button>' +
-      '</div></div></div>';
-  });
-  gal.innerHTML = '<div class="vrow">' + tiles + '</div>';
+  const a = AD();
+  if (done) {
+    $('gallery').innerHTML = '<div class="histbox"><div class="h1">' + c.statusLabel + '</div>' +
+      '<p>' + (c.note || '') + '</p></div>';
+    $('meta').innerHTML = '<h2>Job</h2><div id="jobcode">' + a.code + ' &middot; ' + a.key + '</div>' +
+      '<div class="note">This campaign is a record, not a pickup. Its art and copy are superseded, ' +
+      'and nothing here should be loaded into Ads Manager.</div>';
+    return;
+  }
+  $('gallery').innerHTML = '<div class="vrow">' + S.map((s, i) =>
+    '<div class="tile"><img src="' + srcFor(a, i) + '" alt="">' +
+    '<div class="tmeta"><div class="tcap">' + s.label + ' &middot; ' + s.file.split('_')[1] + '</div>' +
+    '<div class="tbtns"><a href="' + srcFor(a, i) + '" download="' + fileFor(a, i) + '" title="Download">' +
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" ' +
+    'stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>' +
+    '</a></div></div></div>').join('') + '</div>';
 
-  const utmContent = beCode(V);
-  /* a row's url may carry a path or scheme; join the query with whatever is already there */
-  const rawUrl = V.fb.url;
-  const base = /^https?:\/\//.test(rawUrl) ? rawUrl : 'https://' + rawUrl;
-  const sep = base.includes('?') ? '&' : '?';
-  const tagged = base + sep + 'utm_source=' + UTM.source +
-    '&utm_medium=' + UTM.medium + '&utm_content=' + utmContent;
-  meta.innerHTML =
-    '<h2>Job</h2>' +
-    '<div id="jobcode">' + V.code + ' &middot; ' + V.key + '</div>' +
+  /* The campaign is part of the code because it is part of the ad: chef in campaign 1 and chef in
+     campaign 2 share only the PNG. Without it one filter on utm_content merges them. */
+  const utm = 'BE-' + (a.code + '-' + a.key + '-' + CAMP().id.replace('campaign-', 'c') + '-st').toLowerCase();
+  const link = C.standing.thankYouLink + '?utm_source=facebook&utm_medium=paid-social&utm_content=' + utm;
+  $('meta').innerHTML =
+    '<h2>Job</h2><div id="jobcode">' + a.code + ' &middot; ' + a.key + '</div>' +
     '<h2>Facebook post</h2>' +
-    (V.fb.bodies
-      ? '<div class="mlabel">Primary text options (load all six as the text options, replacing the ' +
-        'current set; please don\'t add auto-suggested rewrites)</div>' +
-        V.fb.bodies.map(function(b){
-          return '<div class="filerow"><code>' + b + '</code>' +
-                 '<button class="copyurl" data-url="' + b.replace(/"/g, '&quot;') + '">Copy</button></div>';
-        }).join('')
-      : '<div class="mlabel">Primary text</div><div class="mval">' + V.fb.primary + '</div>') +
-    '<div class="mlabel">Headline</div><div class="mval">' + V.fb.headline + '</div>' +
-    '<div class="mlabel">Description</div><div class="mval">' + V.fb.desc + '</div>' +
-    '<div class="mlabel">Call to action</div><div class="mval"><span class="ctachip">' + V.fb.cta + '</span></div>' +
-    '<div class="mlabel">UTM content (goes in the ad\'s URL parameters field; set utm_campaign to your own value)</div>' +
-    '<div class="mval"><code class="inlinecode">' + utmContent + '</code></div>' +
-    '<div class="mlabel">Destination</div><div class="mval"><b>Instant form only.</b> Please do not ' +
-    'attach a website URL to the ad itself; it changes the conversion location to "website and ' +
-    'instant form" and splits delivery optimisation.</div>' +
+    '<div class="mlabel">Primary text (one only; Meta writes the variations)</div>' +
+    '<div class="filerow"><code>' + a.primary + '</code>' +
+    '<button class="cp" data-v="' + a.primary.replace(/"/g, '&quot;') + '">Copy</button></div>' +
+    '<div class="mlabel">Headline</div><div class="mval">' + a.headline + '</div>' +
+    '<div class="mlabel">Description</div><div class="mval">' + a.desc + '</div>' +
+    '<div class="mlabel">Call to action</div><div class="mval"><span class="ctachip">' + a.cta + '</span></div>' +
+    (a.note ? '<div class="note">' + a.note + '</div>' : '') +
+    '<h2>Setup</h2>' +
+    '<div class="mlabel">Destination</div><div class="mval">' + C.standing.destination + '</div>' +
     '<div class="mlabel">Thank-you screen link (the only place a link goes)</div>' +
-    '<div class="filerow"><code>' + tagged + '</code><button class="copyurl" data-url="' + tagged + '">Copy</button></div>';
+    '<div class="filerow"><code>' + link + '</code><button class="cp" data-v="' + link + '">Copy</button></div>' +
+    '<div class="mlabel">Ad name in Ads Manager</div>' +
+    '<div class="filerow"><code>' + fileFor(a, 1) + '</code>' +
+    '<button class="cp" data-v="' + fileFor(a, 1) + '">Copy</button></div>' +
+    '<div class="standing">' +
+      '<div><b>Ad set.</b> ' + C.standing.adSet + '</div>' +
+      '<div><b>Budget.</b> ' + C.standing.budget + '</div>' +
+      '<div><b>Text.</b> ' + C.standing.text + '</div>' +
+      '<div><b>Naming.</b> ' + C.standing.naming + '</div>' +
+      '<div><b>Then leave it.</b> ' + C.standing.freeze + '</div>' +
+    '</div>';
 }
-gal.addEventListener('click', e => {
-  const t = e.target.closest('img[data-v], button[data-v]');
-  if (!t) return;
-  vi = +t.dataset.v; si = +t.dataset.s;
-  openMock(srcFor(vi, si));
-});
-meta.addEventListener('click', e => {
-  const b = e.target.closest('.copyurl');
+
+/* ---- publish state ------------------------------------------------------------------------
+   The page compares its own data against the LIVE copy on GitHub Pages, so "unpublished changes" is
+   a fact rather than a guess. It loads the live campaigns.js through a SCRIPT TAG rather than
+   fetch(), because fetch is blocked on file:// and cross-origin here while a script tag is not:
+   the same constraint the studio works within. The local object is stashed first and restored
+   after, since both files assign to the same global.
+
+   What it compares is the DATA. Art is always shipped fresh by the publish step, so a change to a
+   PNG alone will not light this up; the state line says so rather than implying more than it knows. */
+(function publishState() {
+  const local = JSON.stringify(window.CAMPAIGNS);
+  const stash = window.CAMPAIGNS;
+  const el = document.getElementById('pubstate'), btn = document.getElementById('pub'),
+        wrap = document.getElementById('pubwrap');
+  const s = document.createElement('script');
+  s.src = 'https://runny.github.io/paysauce-meta-ads/campaigns.js?t=' + Date.now();
+  s.onload = () => {
+    const live = JSON.stringify(window.CAMPAIGNS);
+    window.CAMPAIGNS = stash;
+    if (live === local) {
+      el.textContent = 'Live copy matches. Art still republishes.';
+      btn.classList.add('ready'); btn.disabled = false; btn.textContent = 'Republish';
+    } else {
+      wrap.classList.add('dirty');
+      el.textContent = 'Changes here are not live yet.';
+      btn.classList.add('ready'); btn.disabled = false;
+    }
+  };
+  s.onerror = () => {
+    window.CAMPAIGNS = stash;
+    el.textContent = 'Could not read the live copy. Publish anyway?';
+    btn.classList.add('ready'); btn.disabled = false;
+  };
+  document.head.appendChild(s);
+
+  btn.addEventListener('click', () => {
+    if (btn.disabled) return;
+    if (location.protocol === 'file:') {
+      el.textContent = 'Open this page through the local server to publish.';
+      return;
+    }
+    btn.disabled = true; btn.classList.add('busy'); btn.textContent = 'Publishing…';
+    fetch('/__publish-delivery', { method: 'POST' })
+      .then((r) => r.json())
+      .then((r) => {
+        btn.classList.remove('busy');
+        if (r.ok) {
+          wrap.classList.remove('dirty');
+          btn.textContent = 'Published'; el.textContent = 'Live in a minute or two.';
+        } else {
+          btn.textContent = 'Publish'; btn.disabled = false;
+          el.textContent = (r.out || 'Publish failed.').split('\n').pop().slice(0, 120);
+        }
+      })
+      .catch((e) => {
+        btn.classList.remove('busy'); btn.textContent = 'Publish'; btn.disabled = false;
+        el.textContent = 'Publish failed: ' + e.message;
+      });
+  });
+})();
+
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('.cp');
   if (!b) return;
   const done = () => { b.textContent = 'Copied'; setTimeout(() => b.textContent = 'Copy', 1200); };
-  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(b.dataset.url).then(done, () => {});
+  if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.v).then(done, () => {});
   else done();
 });
 render();
-
-/* phone mock */
-const CHILLI = '#D84727';
-function dummyPost(h){
-  return '<div class="post">' +
-    '<div class="posthead"><span class="avatar" style="background:#dedddb"></span>' +
-    '<span class="pmeta"><span class="l1"></span><span class="l2"></span></span></div>' +
-    '<div class="pimg" style="height:' + h + 'px"></div>' +
-    '<div class="actions"><i></i><i></i><i></i></div>' +
-    '<div class="cap"><div class="l1"></div><div class="l2"></div></div></div>';
-}
-const AVATAR = '<span class="avatar" style="background:' + CHILLI + '; display:flex; align-items:center; justify-content:center"><img src="assets/splodge--white.svg" style="width:58%; height:58%"></span>';
-function openMock(url){
-  const phone = $('phone'), feed = $('feed');
-  const fb = VARIANTS()[vi].fb;
-  if (SIZES[si].key === '9x16'){
-    phone.classList.add('story');
-    feed.innerHTML =
-      '<img class="storyimg" src="' + url + '">' +
-      '<div class="storytop"><div class="storybars"><i class="on"></i><i></i><i></i></div>' +
-      '<div class="storyhead">' + AVATAR +
-      '<span><div class="adname" style="color:#fff">PaySauce</div><div class="adsub" style="color:rgba(255,255,255,.8)">Sponsored</div></span></div></div>' +
-      '<div class="storycta"><span class="chev">&#8963;</span><span class="pillbtn">' + fb.cta + '</span></div>';
-  } else {
-    phone.classList.remove('story');
-    feed.innerHTML =
-      dummyPost(300) +
-      '<div class="post" id="adpost">' +
-      '<div class="posthead">' + AVATAR +
-      '<span><div class="adname">PaySauce</div><div class="adsub">Sponsored</div></span></div>' +
-      '<div class="primary">' + fb.primary + '</div>' +
-      '<img class="adimg" src="' + url + '">' +
-      '<div class="linkcard"><span class="lc-left"><span class="lc-url">' + fb.url.toUpperCase() + '</span>' +
-      '<span class="lc-head">' + fb.headline + '</span>' +
-      '<span class="lc-desc">' + (fb.desc || '') + '</span></span>' +
-      '<span class="lc-cta">' + fb.cta + '</span></div>' +
-      '<div class="actions"><i></i><i></i><i></i></div>' +
-      '<div class="cap"><div class="l1"></div><div class="l2"></div></div>' +
-      '</div>' +
-      dummyPost(340) + dummyPost(280);
-  }
-  $('mockview').classList.add('open');
-  if (SIZES[si].key !== '9x16'){
-    requestAnimationFrame(() => {
-      const ad = document.getElementById('adpost');
-      if (ad) feed.scrollTop = Math.max(0, ad.offsetTop - 90);
-    });
-  }
-}
-function closeMock(){ $('mockview').classList.remove('open'); }
-$('mockclose').addEventListener('click', closeMock);
-$('mockview').addEventListener('click', e => { if (e.target === $('mockview')) closeMock(); });
-document.addEventListener('click', e => {
-});
-window.addEventListener('keydown', e => {
-  if (e.code === 'ArrowLeft' || e.code === 'ArrowRight'){ vi = (vi + 1) % VARIANTS.length; render(); }
-});
 </script>
 </body>
 </html>
