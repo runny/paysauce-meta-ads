@@ -207,7 +207,22 @@ const ROUND2_BODIES = [
 const ROUND2_FB = Object.assign({}, CONTROL_FB, {
   primary: ROUND2_BODIES[0], bodies: ROUND2_BODIES
 });
+/* The CONTROL: Image #1, the account's strongest static, resupplied so every new ad is judged
+   against it under identical conditions. Art and headline are the original exactly; only a 4x5 was
+   ever made, so that is the one size. Body is the original minus two withdrawn lines. */
+const CONTROL_IMAGE1_FB = {
+  primary: "You didn't hire staff so you could spend Sunday night working out penalty rates. \ud83d\ude05\nPayday Super is coming in 2026. Super will need to be paid on EVERY pay run \u2014 not quarterly. If your payroll system isn't ready, the time to switch is NOW. \u26a1\n\nPaySauce does the hard stuff for you. \ud83d\udcaa\n\n\u2705 Award interpretation built in \u2014 Hospitality, Retail, General & IFA\n\u2705 Payday Super ready. Paid every payday. Automatic. Compliant.\n\u2705 Done in 10\u201315 minutes from your phone \ud83d\udcf1\n\u2705 Single Touch Payroll \u2014 automatic, no extra steps\n\u2705 Built for teams of 1 to 25 staff\n\nHere's what payday looks like with PaySauce \ud83d\udc47\n\nStaff clock in and out on the app.\nHours captured.\nAward rates applied.\nSuper calculated.\n\nYou review, approve, pay. Done before your coffee goes cold. \u2615\n\nNo spreadsheets. No Sunday stress. No expensive compliance mistakes.\n\n\ud83d\udc47 Get started today.",
+  headline: "Payroll Sorted in 15 Mins!",
+  desc: "Get started.",
+  cta: "Learn more", url: "www.paysauce.com/au"
+};
+
 const ROUNDS = [
+  {id: 'control', label: 'Control', dir: 'creatives/control/', code: 'CTL-01', dest: 'form',
+   sizes: [{key: '4x5', label: '4:5', file: '4x5_1080x1350'}],
+   variants: [
+    {code: 'CTL-01', key: 'image-1', label: 'Image #1', fb: CONTROL_IMAGE1_FB},
+  ]},
   {id: 'round-1', label: 'Round 1', dir: 'creatives/round1/', code: 'BAI-01-01', variants: [
     {code: 'BAI-01-01', key: 'v1-chef', label: 'Chef', fb: CONTROL_FB},
     {code: 'BAI-01-01', key: 'v1-framer', label: 'Framer',
@@ -230,9 +245,10 @@ let ri = 0, vi = 0, si = 0;
 const hashRound = ROUNDS.findIndex(r => r.id === location.hash.slice(1));
 if (hashRound >= 0) ri = hashRound;
 const R = () => ROUNDS[ri];
+const SZ = () => R().sizes || SIZES;  /* the control only ever existed as a 4x5 */
 const VARIANTS = () => R().variants;
 const $ = id => document.getElementById(id);
-const fileFor = (v, s) => VARIANTS()[v].code + '-' + VARIANTS()[v].key + '_' + SIZES[s].file + '.png';
+const fileFor = (v, s) => VARIANTS()[v].code + '-' + VARIANTS()[v].key + '_' + SZ()[s].file + '.png';
 const srcFor = (v, s) => R().dir + fileFor(v, s);
 
 /* tabbed gallery: one cast member at a time, all three sizes */
@@ -261,7 +277,7 @@ function render(){
 
   const V = VARIANTS()[vi], v = vi;
   let tiles = '';
-  SIZES.forEach((S, s) => {
+  SZ().forEach((S, s) => {
     tiles += '<div class="tile">' +
       '<img src="' + srcFor(v, s) + '" data-v="' + v + '" data-s="' + s + '" alt="">' +
       '<div class="tmeta"><div class="tcap">' + S.label + ' &middot; ' + S.file.split('_')[1] + '</div>' +
