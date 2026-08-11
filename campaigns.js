@@ -43,26 +43,30 @@ window.CAMPAIGNS = {
     {
       id: "campaign-1",
       name: "Campaign 1 · Cast",
+      /* ⚠ THIS COPY IS WHAT IS LIVE IN THE ACCOUNT, pulled from Meta on 11 Aug 2026, not what we
+         would write today. Campaign 1 is the record of what is running and about to be switched
+         off, so it has to match Ads Manager: "10x easier" and "Try PaySauce for free" both ship in
+         it, and both were replaced in later work. Do not tidy them here. */
       ads: [
         {
           code: "BAI-01-01", key: "v1-chef", slug: "chef", label: "Chef", dir: "creatives/campaign-1/",
           primary: "Pays, super, PAYG and payslips, handled in one pay run. Payroll that takes payday off your plate.",
-          headline: "Payroll, sorted in one tap", desc: "Get started.", cta: "Learn more"
+          headline: "Payroll, sorted in one tap", desc: "Try PaySauce for free.", cta: "Learn more"
         },
         {
           code: "BAI-01-01", key: "v2-framer", slug: "framer", label: "Framer", dir: "creatives/campaign-1/",
           primary: "Payday, payments and filing handled, so it's off your mind by morning tea. Built for small business.",
-          headline: "That's payroll sorted", desc: "Get started.", cta: "Learn more"
+          headline: "That's payroll sorted", desc: "Payroll made easy.", cta: "Learn more"
         },
         {
           code: "BAI-01-02", key: "v2-salon", slug: "salon", label: "Salon", dir: "creatives/campaign-1/",
-          primary: "Pays, super, PAYG and payslips, handled in one pay run. Done in one click.",
-          headline: "Payroll, sorted in one tap", desc: "Get started.", cta: "Learn more"
+          primary: "Pays, super, PAYG and payslips, handled in one pay run. Payroll that makes payday 10x easier.",
+          headline: "Payroll, sorted in one tap", desc: "Try PaySauce for free.", cta: "Learn more"
         },
         {
           code: "BAI-01-03", key: "v3-bookkeeper", slug: "bookkeeper", label: "Bookkeeper", dir: "creatives/campaign-1/",
-          primary: "Pays, super, PAYG and payslips, handled in one pay run. Done in one click.",
-          headline: "Payroll, sorted in one tap", desc: "Get started.", cta: "Learn more"
+          primary: "Pays, super, PAYG and payslips, handled in one pay run. Payroll that makes payday 10x easier.",
+          headline: "Payroll, sorted in one tap", desc: "Try PaySauce for free.", cta: "Learn more"
         }
       ]
     },
