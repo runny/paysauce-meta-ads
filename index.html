@@ -178,9 +178,14 @@ if (sessionStorage.getItem('r1-ok') === '1'){
   });
 }
 /* Rounds. Each variant carries its own code, because round two mixes codes. */
-/* UTM scheme: content is derived from code+variant so it cannot drift.
-   Campaign name is the one hand-set value; confirm with Yash. */
-const UTM = {source: 'facebook', medium: 'paid-social', campaign: 'au-launch'};
+/* UTM scheme, rewritten 11 Aug 2026. We tag ONLY utm_content, in the BE- inventory format:
+   one analytics filter ("manual ad content begins with BE-") isolates this creative inventory.
+   utm_campaign belongs to whoever runs the campaign and is never set here.
+   These rounds run in the lead-form campaign, so the ad gets NO website URL at all: attaching one
+   switches the ad set to "website and instant form" and splits the optimisation. The tagged link
+   below goes on the instant form's THANK-YOU SCREEN only. */
+const UTM = {source: 'facebook', medium: 'paid-social'};
+const beCode = V => 'BE-' + (V.code + '-' + V.key + '-st').toLowerCase();
 const CONTROL_FB = {
   primary: "Pays, super, PAYG and payslips, handled in one pay run. Payroll that takes payday off your plate.",
   headline: "Payroll, sorted in one tap",
@@ -259,9 +264,9 @@ function render(){
   });
   gal.innerHTML = '<div class="vrow">' + tiles + '</div>';
 
-  const utmContent = (V.code + '-' + V.key).toLowerCase();
+  const utmContent = beCode(V);
   const tagged = 'https://www.' + V.fb.url + '/?utm_source=' + UTM.source +
-    '&utm_medium=' + UTM.medium + '&utm_campaign=' + UTM.campaign + '&utm_content=' + utmContent;
+    '&utm_medium=' + UTM.medium + '&utm_content=' + utmContent;
   meta.innerHTML =
     '<h2>Job</h2>' +
     '<div id="jobcode">' + V.code + ' &middot; ' + V.key + '</div>' +
@@ -270,8 +275,12 @@ function render(){
     '<div class="mlabel">Headline</div><div class="mval">' + V.fb.headline + '</div>' +
     '<div class="mlabel">Description</div><div class="mval">' + V.fb.desc + '</div>' +
     '<div class="mlabel">Call to action</div><div class="mval"><span class="ctachip">' + V.fb.cta + '</span></div>' +
-    '<div class="mlabel">UTM content</div><div class="mval"><code class="inlinecode">' + utmContent + '</code></div>' +
-    '<div class="mlabel">Tagged URL</div>' +
+    '<div class="mlabel">UTM content (goes in the ad\'s URL parameters field; set utm_campaign to your own value)</div>' +
+    '<div class="mval"><code class="inlinecode">' + utmContent + '</code></div>' +
+    '<div class="mlabel">Destination</div><div class="mval"><b>Instant form only.</b> Please do not ' +
+    'attach a website URL to the ad itself; it changes the conversion location to "website and ' +
+    'instant form" and splits delivery optimisation.</div>' +
+    '<div class="mlabel">Thank-you screen link (the only place a link goes)</div>' +
     '<div class="filerow"><code>' + tagged + '</code><button class="copyurl" data-url="' + tagged + '">Copy</button></div>';
 }
 gal.addEventListener('click', e => {
