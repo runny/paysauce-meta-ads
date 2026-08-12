@@ -86,7 +86,7 @@ window.CAMPAIGNS = {
           headline: "Payday made simple.", desc: "Get started.", cta: "Learn more"
         },
         {
-          code: "SCN-04", key: "v1-without-banking", slug: "banking", label: "Without the banking", dir: "creatives/campaign-2/",
+          code: "SCN-04", key: "v2-no-banking", slug: "banking", label: "Without the banking", dir: "creatives/campaign-2/",
           primary: "Press it once. The transfers happen on their own, to your staff, the ATO and every super fund.",
           headline: "Payday, without the banking.", desc: "Get started.", cta: "Learn more"
         }
@@ -108,9 +108,9 @@ window.CAMPAIGNS = {
           headline: "Payday made simple.", desc: "Get started.", cta: "Learn more"
         },
         {
-          code: "SCN-04", key: "v2-no-banking", slug: "banking", label: "Without the banking", dir: "creatives/campaign-3/",
-          primary: "Press it once. The transfers happen on their own, to your staff, the ATO and every super fund.",
-          headline: "Payday, without the banking.", desc: "Get started.", cta: "Learn more"
+          code: "SCN-02", key: "v1-cafe", slug: "cafe", label: "Cafes", dir: "creatives/campaign-3/",
+          primary: "Everyone paid at once. Super and ATO done. No transfers, no bank files.",
+          headline: "Payday made simple.", desc: "Get started.", cta: "Learn more"
         }
       ]
     }
