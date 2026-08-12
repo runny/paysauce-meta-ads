@@ -26,7 +26,7 @@
    alternates here. */
 
 window.CAMPAIGNS = {
-  updated: "2026-08-11",
+  updated: "2026-08-12",
 
   /* Stated once, rendered on every ad, so it cannot drift row to row. */
   standing: {
@@ -98,19 +98,19 @@ window.CAMPAIGNS = {
       name: "Campaign 3 · Trade",
       ads: [
         {
-          code: "SCN-01", key: "v3-in-full", slug: "generic", label: "Generic", dir: "creatives/campaign-3/",
+          code: "SCN-01", key: "v3-smb", slug: "smb", label: "Small business", dir: "creatives/campaign-3/",
           primary: "Staff, tax and super all sent at once. Nothing to transfer, nothing to upload.",
           headline: "Payday made simple.", desc: "Get started.", cta: "Learn more"
         },
         {
-          code: "SCN-02", key: "v1-cafe", slug: "cafe", label: "Cafes", dir: "creatives/campaign-3/",
+          code: "SCN-02", key: "v2-cake", slug: "cake", label: "Cake shops", dir: "creatives/campaign-3/",
           primary: "Everyone paid at once. Super and ATO done. No transfers, no bank files.",
           headline: "Payday made simple.", desc: "Get started.", cta: "Learn more"
         },
         {
-          code: "SCN-02", key: "v2-shop", slug: "shop", label: "Shops", dir: "creatives/campaign-3/",
-          primary: "Everyone paid at once. Super and ATO done. No transfers, no bank files.",
-          headline: "Payday made simple.", desc: "Get started.", cta: "Learn more"
+          code: "SCN-04", key: "v2-no-banking", slug: "banking", label: "Without the banking", dir: "creatives/campaign-3/",
+          primary: "Press it once. The transfers happen on their own, to your staff, the ATO and every super fund.",
+          headline: "Payday, without the banking.", desc: "Get started.", cta: "Learn more"
         }
       ]
     }
