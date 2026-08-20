@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The ATO's super clearing house has closed. What now? | PaySauce Australia</title>
+<meta name="description" content="The Small Business Superannuation Clearing House closed on 1 July 2026, and super is now due every pay run. Here is what changed, what you have to do, and how to make it one click.">
+<!-- PUBLISHED COPY for sharing (21 Aug 2026). Source of truth stays in landing-lab; re-publish
+     from there rather than editing this file. noindex is deliberate: this is a draft wearing
+     PaySauce branding on a domain that is not PaySauce, so it must not be crawled.
+     HUBSPOT NOTE: when converting to a HubSpot template, insert {{ standard_header_includes }} here -->
+<!--
+  lp-clearing-house-v1 · P18 landing page for the C4 clearing-house ad.
+  Built 21 Aug 2026. Tokens and type are landing-lab/DESIGN.md (extracted from the live AU site).
+
+  WHY THIS PAGE EXISTS: the ad behind it is a news claim, not a product claim. A reader who is told
+  a government service closed still has to work out why that means talking to a payroll company, and
+  a booking form will not do that work for them. This page does it, then books.
+
+  CLAIMS USED, all [F] in concept-lab/CLAIMS.md:
+    sbsch-closed · payday-super-commenced · super-every-pay-run · one-click
+    pays-everyone-no-bank-file · pricing · guarantee (money-back, NOT 90 days free)
+  BANNED and deliberately absent: any "no bots / no AI / no chatbots" line (Fin is real).
+
+  ⚠ CTA: framed as a conversation, not a demo, per Kelly's inbound feedback (20 Aug) that prospects
+  want to talk to a payroll person about fit before committing to a demo. The embedded scheduler is
+  still the existing personalised-demo link; if this framing is adopted the HubSpot meeting title
+  and duration should change to match, or the page promises one thing and the calendar shows another.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --hot-chilli-500: #d84727;
+    --hot-chilli-400: #ff725b;
+    --hot-chilli-200: #fecfb7;
+    --aioli-500: #fdf4e8;
+    --blueberry-500: #2e5266;
+    --mint-500: #8ea604;
+    --neutral-0: #ffffff;
+    --neutral-100: #eaeaea;
+    --neutral-300: #b4b3b3;
+    --neutral-500: #7e7b7b;
+    --neutral-700: #4c4747;
+    --neutral-900: #2d2a2a;
+    --font-montserrat: "Montserrat", sans-serif;
+    --font-inter: "Inter", sans-serif;
+    --radius-button: 2px;
+    --radius-field: 6px;
+    --radius-card: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-inter);
+    color: var(--neutral-900);
+    background: var(--neutral-0);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  .measure { max-width: 660px; }
+
+  h1, h2, h3 { font-family: var(--font-montserrat); color: var(--blueberry-500); }
+  h1 { font-size: clamp(34px, 5.2vw, 56px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; text-wrap: balance; }
+  h2 { font-size: clamp(25px, 3.2vw, 34px); font-weight: 700; line-height: 1.18; letter-spacing: -0.012em; text-wrap: balance; }
+  h3 { font-size: 19px; font-weight: 700; line-height: 1.3; }
+  p { margin-top: 16px; }
+  a { color: var(--hot-chilli-500); }
+
+  .eyebrow {
+    font-family: var(--font-montserrat); font-size: 12px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--hot-chilli-500);
+  }
+
+  /* ---------- nav ---------- */
+  .nav { border-bottom: 1px solid var(--neutral-100); background: var(--neutral-0); }
+  .nav__inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; max-width: 1080px; margin: 0 auto; gap: 16px; }
+  .nav img { height: 26px; width: auto; display: block; }
+  .nav .btn { padding: 10px 18px; font-size: 14px; }
+
+  /* ---------- hero ---------- */
+  .hero { background: var(--aioli-500); padding: clamp(48px, 8vw, 88px) 0 clamp(40px, 6vw, 68px); }
+  .hero .lede { font-size: clamp(18px, 2.2vw, 21px); color: var(--neutral-700); margin-top: 20px; }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 32px; }
+  .btn {
+    display: inline-block; background: var(--hot-chilli-500); color: var(--neutral-0);
+    font-family: var(--font-montserrat); font-weight: 700; font-size: 16px;
+    padding: 15px 28px; border-radius: var(--radius-button); text-decoration: none;
+    transition: background .15s ease;
+  }
+  .btn:hover { background: var(--hot-chilli-400); }
+  .btn--ghost { background: transparent; color: var(--blueberry-500); border: 1.5px solid var(--blueberry-500); }
+  .btn--ghost:hover { background: var(--blueberry-500); color: var(--neutral-0); }
+  .hero__note { font-size: 14px; color: var(--neutral-500); margin-top: 14px; }
+
+  /* ---------- what changed ---------- */
+  .changed { padding: clamp(48px, 7vw, 80px) 0; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 34px; }
+  .panel { border: 1px solid var(--neutral-100); border-radius: var(--radius-card); padding: 28px 26px; }
+  .panel--then { background: var(--neutral-0); }
+  .panel--now { background: var(--aioli-500); border-color: var(--hot-chilli-200); }
+  .panel .tag {
+    font-family: var(--font-montserrat); font-size: 11px; font-weight: 700; letter-spacing: 1.6px;
+    text-transform: uppercase; color: var(--neutral-500);
+  }
+  .panel--now .tag { color: var(--hot-chilli-500); }
+  .panel h3 { margin-top: 10px; }
+  .panel p { font-size: 15.5px; color: var(--neutral-700); margin-top: 12px; }
+  @media (max-width: 720px) { .pair { grid-template-columns: 1fr; } }
+
+  /* ---------- the squeeze ---------- */
+  .squeeze { background: var(--blueberry-500); color: var(--neutral-0); padding: clamp(48px, 7vw, 76px) 0; }
+  .squeeze h2 { color: var(--neutral-0); }
+  .squeeze p { color: rgba(255,255,255,.86); }
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 34px; }
+  .fact { border-top: 2px solid var(--hot-chilli-400); padding-top: 16px; }
+  .fact .n { font-family: var(--font-montserrat); font-size: clamp(28px, 3.6vw, 40px); font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+  .fact .t { font-size: 14.5px; color: rgba(255,255,255,.8); margin-top: 10px; line-height: 1.5; }
+  @media (max-width: 720px) { .facts { grid-template-columns: 1fr; gap: 24px; } }
+
+  /* ---------- options ---------- */
+  .options { padding: clamp(48px, 7vw, 80px) 0; }
+  .opt { border-top: 1px solid var(--neutral-100); padding: 24px 0; display: grid; grid-template-columns: 220px 1fr; gap: 28px; }
+  .opt:last-of-type { border-bottom: 1px solid var(--neutral-100); }
+  .opt h3 { color: var(--blueberry-500); }
+  .opt p { margin-top: 0; font-size: 15.5px; color: var(--neutral-700); }
+  @media (max-width: 720px) { .opt { grid-template-columns: 1fr; gap: 8px; } }
+
+  /* ---------- how we do it ---------- */
+  .how { background: var(--aioli-500); padding: clamp(48px, 7vw, 80px) 0; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 34px; }
+  .step { background: var(--neutral-0); border-radius: var(--radius-card); padding: 26px 24px; }
+  .step .num {
+    font-family: var(--font-montserrat); font-size: 13px; font-weight: 700; letter-spacing: 1.6px;
+    color: var(--hot-chilli-500);
+  }
+  .step h3 { margin-top: 10px; font-size: 17.5px; }
+  .step p { font-size: 15px; color: var(--neutral-700); margin-top: 10px; }
+  @media (max-width: 720px) { .steps { grid-template-columns: 1fr; } }
+
+  .price { margin-top: 34px; padding-top: 26px; border-top: 1px solid var(--hot-chilli-200); }
+  .price .big { font-family: var(--font-montserrat); font-size: clamp(24px, 3vw, 32px); font-weight: 700; color: var(--blueberry-500); letter-spacing: -0.015em; }
+  .price p { font-size: 15.5px; color: var(--neutral-700); }
+
+  /* ---------- book ---------- */
+  .book { padding: clamp(48px, 7vw, 80px) 0 clamp(56px, 8vw, 92px); }
+  .book__sub { font-size: 17px; color: var(--neutral-700); margin-top: 14px; }
+  .book__widget { margin-top: 30px; border: 1px solid var(--neutral-100); border-radius: var(--radius-card); overflow: hidden; }
+  .book__widget .meetings-iframe-container { min-height: 640px; }
+  .book__privacy { font-size: 13.5px; color: var(--neutral-500); margin-top: 16px; }
+
+  /* ---------- footer ---------- */
+  .footer { border-top: 1px solid var(--neutral-100); padding: 28px 0; }
+  .footer__inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  .footer img { height: 24px; width: auto; }
+  .footer__links { display: flex; gap: 20px; font-size: 14px; }
+  .footer__links a { color: var(--neutral-500); text-decoration: none; }
+  .footer__links a:hover { color: var(--hot-chilli-500); }
+
+  :focus-visible { outline: 2px solid var(--hot-chilli-500); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <img src="https://www.paysauce.com/hs-fs/hubfs/Logos/PaySauce-horizontal(red).png?width=400&name=PaySauce-horizontal(red).png" alt="PaySauce">
+    <a class="btn" href="#talk">Talk to a payroll person</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container measure">
+    <p class="eyebrow">Superannuation &middot; what changed on 1 July</p>
+    <h1>The ATO's free clearing house has closed.</h1>
+    <p class="lede">If you used it to pay super for your staff in one go, it stopped working on 1 July 2026. At the same time, super stopped being a quarterly job. Here is what actually changed, and what your options are now.</p>
+    <div class="hero__cta">
+      <a class="btn" href="#talk">Talk to a payroll person</a>
+      <a class="btn btn--ghost" href="#what">See what changed</a>
+    </div>
+    <p class="hero__note">No demo required. A real conversation about whether we are a fit, and an honest answer if we are not.</p>
+  </div>
+</section>
+
+<section class="changed" id="what">
+  <div class="container">
+    <div class="measure">
+      <h2>What the clearing house did, and why it went</h2>
+      <p>Every employee can be in a different super fund. The Small Business Superannuation Clearing House let you make one payment to the ATO, and the ATO split it up and sent the right amount to each fund. It was free, and for a small employer it removed the fiddliest recurring job in payroll.</p>
+      <p>It was built for a world where super was paid four times a year. That world ended on the same day it did.</p>
+    </div>
+
+    <div class="pair">
+      <div class="panel panel--then">
+        <span class="tag">Until 30 June 2026</span>
+        <h3>Super, four times a year</h3>
+        <p>One payment to the ATO each quarter, free, covering every employee. Registrations for the service had already closed to new users in October 2025.</p>
+      </div>
+      <div class="panel panel--now">
+        <span class="tag">From 1 July 2026</span>
+        <h3>Super, every pay run</h3>
+        <p>Payday Super commenced. Super is now paid at the same time as wages, and contributions need to reach the fund within seven days. The clearing house could not work that way, so it was retired rather than rebuilt.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="squeeze">
+  <div class="container">
+    <div class="measure">
+      <h2>Two changes landed in the same month</h2>
+      <p>On their own, each one is an annoyance. Together they turn a quarterly chore into a job you now do every single time you pay someone, without the free tool that used to make it simple.</p>
+    </div>
+    <div class="facts">
+      <div class="fact">
+        <div class="n">19</div>
+        <div class="t">or fewer employees was all it took to qualify. If you had staff, you were almost certainly eligible.</div>
+      </div>
+      <div class="fact">
+        <div class="n">13&times;</div>
+        <div class="t">more often, roughly, if you pay weekly. Super moved from four times a year to every pay run.</div>
+      </div>
+      <div class="fact">
+        <div class="n">7 days</div>
+        <div class="t">is how long contributions have to reach the fund once wages are paid.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="options">
+  <div class="container">
+    <div class="measure">
+      <h2>What your options actually are</h2>
+      <p>The ATO points former users in three directions. They are not equally good, and which one suits you depends mostly on how much you want to keep doing by hand.</p>
+    </div>
+
+    <div class="opt">
+      <h3>Your super fund's clearing house</h3>
+      <p>Most funds run one. Usually free. The catch is that it sits outside your payroll, so you are still moving numbers between two systems every pay run, and doing it far more often than before.</p>
+    </div>
+    <div class="opt">
+      <h3>A commercial clearing house</h3>
+      <p>Does the same distribution job the ATO used to. Often batch-based and manual, and usually another subscription on top of whatever you already pay for payroll.</p>
+    </div>
+    <div class="opt">
+      <h3>Payroll that pays super itself</h3>
+      <p>The super is calculated and sent as part of running the pay, so there is no separate step to remember and nothing to reconcile between systems. This is what we do.</p>
+    </div>
+  </div>
+</section>
+
+<section class="how">
+  <div class="container">
+    <div class="measure">
+      <h2>How it works with PaySauce</h2>
+      <p>One click sends everything. Not a bank file to upload, not a separate super run to remember.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">01</div>
+        <h3>Run the pay</h3>
+        <p>Hours come in, the pay is calculated, and you check it. Award rates, PAYG and super are worked out as part of the run.</p>
+      </div>
+      <div class="step">
+        <div class="num">02</div>
+        <h3>Press once</h3>
+        <p>That single action pays your staff, pays the ATO, and pays every employee's super fund. There is no bank file for you to handle.</p>
+      </div>
+      <div class="step">
+        <div class="num">03</div>
+        <h3>Super is already done</h3>
+        <p>Because it goes with every pay run, there is no quarterly deadline to chase and no clearing house to replace.</p>
+      </div>
+    </div>
+
+    <div class="price measure">
+      <div class="big">$50 a month, plus $5 per employee</div>
+      <p>Your first employee is included. No tiers and no add-ons, and there is a 90-day money-back guarantee if it turns out not to suit you.</p>
+    </div>
+  </div>
+</section>
+
+<section class="book" id="talk">
+  <div class="container">
+    <div class="measure">
+      <h2>Talk to a payroll person</h2>
+      <p class="book__sub">Not a sales demo. A conversation with someone who does payroll for a living, about what you are running now and whether moving is actually worth it for you. If it is not, they will say so.</p>
+    </div>
+
+    <!-- LIVE WIDGET: same HubSpot Meetings scheduler as /au/book-a-demo (Anna Cochrane).
+         ⚠ If the conversation framing above is adopted, change the meeting title and duration in
+         HubSpot to match, or the page says "a chat" and the calendar says "30-minute demo".
+         data-src uses HubSpot's native meetings domain: the www.paysauce.com/meetings/... variant
+         sends x-frame-options SAMEORIGIN and only embeds on paysauce.com pages. This one embeds anywhere. -->
+    <div class="book__widget">
+      <div class="meetings-iframe-container" data-src="https://meetings-ap1.hubspot.com/anna-cochrane/paysauce-personalised-demo?embed=true"></div>
+    </div>
+    <script type="text/javascript" src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"></script>
+    <p class="book__privacy">We will only use these details to arrange your conversation. <a href="https://www.paysauce.com/nz/privacy-policy">Privacy policy</a></p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <img src="https://www.paysauce.com/hs-fs/hubfs/Logos/PaySauce-horizontal(red).png?width=400&name=PaySauce-horizontal(red).png" alt="PaySauce">
+    <div class="footer__links">
+      <a href="https://www.paysauce.com/nz/privacy-policy">Privacy</a>
+      <a href="https://www.paysauce.com/au">paysauce.com/au</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
