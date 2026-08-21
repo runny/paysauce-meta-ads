@@ -185,7 +185,14 @@ function render() {
     '</a></div></div></div>').join('') + '</div>';
 
   const utm = 'BE-' + CAMP().id.replace('campaign-', 'c') + '-' + a.slug;
-  const link = C.standing.thankYouLink + '?utm_source=facebook&utm_medium=paid-social&utm_content=' + utm;
+  /* Most ads are instant-form and their only link is the form's thank-you screen. An ad that
+     declares `landing` sends traffic to a page instead, so the tagged URL is the ad's own
+     destination and it says so, rather than sitting under a label that means something else. */
+  const base = a.landing || C.standing.thankYouLink;
+  const link = base + '?utm_source=facebook&utm_medium=paid-social&utm_content=' + utm;
+  const linkLabel = a.landing
+    ? 'Ad destination URL (tagged, paste as the ad\u2019s website URL)'
+    : 'Thank-you screen link (the only place a link goes)';
   $('meta').innerHTML =
     '<h2>Job</h2><div id="jobcode">' + a.code + ' &middot; ' + a.key + '</div>' +
     '<h2>Facebook post</h2>' +
@@ -196,11 +203,11 @@ function render() {
     '<div class="mlabel">Description</div><div class="mval">' + a.desc + '</div>' +
     '<div class="mlabel">Call to action</div><div class="mval"><span class="ctachip">' + a.cta + '</span></div>' +
     '<h2>Setup</h2>' +
-    '<div class="mlabel">Destination</div><div class="mval">' + C.standing.destination + '</div>' +
+    '<div class="mlabel">Destination</div><div class="mval">' + (a.destination || C.standing.destination) + '</div>' +
     '<div class="mlabel">URL parameters</div>' +
     '<div class="filerow"><code>utm_content=' + utm + '</code>' +
     '<button class="cp" data-v="utm_content=' + utm + '">Copy</button></div>' +
-    '<div class="mlabel">Thank-you screen link (the only place a link goes)</div>' +
+    '<div class="mlabel">' + linkLabel + '</div>' +
     '<div class="filerow"><code>' + link + '</code><button class="cp" data-v="' + link + '">Copy</button></div>' +
     '<div class="mlabel">Ad name in Ads Manager</div>' +
     '<div class="filerow"><code>' + fileFor(a, 1) + '</code>' +

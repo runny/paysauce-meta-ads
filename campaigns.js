@@ -132,7 +132,12 @@ window.CAMPAIGNS = {
         {
           code: "BAI-07-01", key: "v1-date-line", slug: "clearing", label: "Clearing house", dir: "creatives/campaign-4/",
           primary: "The ATO's free super clearing house closed on 1 July. Run the pay in PaySauce and one click does the rest: staff paid, the ATO filed, super sent to every fund.",
-          headline: "The clearing house has closed", desc: "Get started.", cta: "Learn more"
+          headline: "The clearing house has closed", desc: "Get started.", cta: "Learn more",
+          /* The only ad in the account that sends traffic to a page. The claim behind it is a news
+             claim, and a reader told a government service closed still has to work out why that
+             means talking to a payroll company. The page does that work, then books. */
+          landing: "https://www.paysauce.com/au/super-clearing-house",
+          destination: "Website, not instant form. Send traffic to the tagged URL below and leave the instant form off this one ad."
         }
       ]
     }
