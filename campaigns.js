@@ -26,7 +26,7 @@
    alternates here. */
 
 window.CAMPAIGNS = {
-  updated: "2026-08-12",
+  updated: "2026-08-21",
 
   /* Stated once, rendered on every ad, so it cannot drift row to row. */
   standing: {
@@ -111,6 +111,28 @@ window.CAMPAIGNS = {
           code: "SCN-02", key: "v1-cafe", slug: "cafe", label: "Cafes", dir: "creatives/campaign-3/",
           primary: "Everyone paid at once. Super and ATO done. No transfers, no bank files.",
           headline: "Payday made simple.", desc: "Get started.", cta: "Learn more"
+        }
+      ]
+    },
+
+    {
+      id: "campaign-4",
+      name: "Campaign 4 \u00b7 Reason",
+      ads: [
+        {
+          code: "BAI-04-01", key: "v1-run-stack", slug: "ninety", label: "Ninety minutes", dir: "creatives/campaign-4/",
+          primary: "Weekly payroll across three systems took ninety minutes. Now it is one pay run: staff paid, the ATO filed, super sent to every fund.",
+          headline: "One click does the pay run", desc: "Get started.", cta: "Learn more"
+        },
+        {
+          code: "BAI-05-01", key: "v1-credential", slug: "expert", label: "Payroll expert", dir: "creatives/campaign-4/",
+          primary: "Your setup call is one to one with a payroll expert or BAS agent, at a time you pick. Not a support queue.",
+          headline: "Set up by a payroll expert", desc: "Get started.", cta: "Learn more"
+        },
+        {
+          code: "BAI-07-01", key: "v1-date-line", slug: "clearing", label: "Clearing house", dir: "creatives/campaign-4/",
+          primary: "The ATO's free super clearing house closed on 1 July. Run the pay in PaySauce and one click does the rest: staff paid, the ATO filed, super sent to every fund.",
+          headline: "The clearing house has closed", desc: "Get started.", cta: "Learn more"
         }
       ]
     }
