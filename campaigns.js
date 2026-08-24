@@ -26,7 +26,7 @@
    alternates here. */
 
 window.CAMPAIGNS = {
-  updated: "2026-08-21",
+  updated: "2026-08-24",
 
   /* Stated once, rendered on every ad, so it cannot drift row to row. */
   standing: {
@@ -128,9 +128,23 @@ window.CAMPAIGNS = {
           code: "BAI-05-01", key: "v1-credential", slug: "expert", label: "Payroll expert", dir: "creatives/campaign-4/",
           primary: "Your setup call is one to one with a payroll expert or BAS agent, at a time you pick. Not a support queue.",
           headline: "Set up by a payroll expert", desc: "Get started.", cta: "Learn more"
-        },
+        }
+      ]
+    },
+
+    /* Split out of Campaign 4 on 24 Aug 2026: this ad runs in the Meta account as its own
+       campaign, "C5 Clearing House" (Meta's own numbering, not ours), not inside C4. Filing it
+       under campaign-4 here was leftover from how it was designed, not how it shipped.
+       ⚠ Its live tagged URL was set from THIS page while the ad still lived under campaign-4, so
+       the ad running today carries utm_content=BE-c4-clearing. The line below will read as
+       BE-c5-clearing from now on. That is correct for anything relaunched from here; it will not
+       match the URL already live until the ad itself is edited to match, which is Yash's call. */
+    {
+      id: "campaign-5",
+      name: "Campaign 5 \u00b7 Clearing House",
+      ads: [
         {
-          code: "BAI-07-01", key: "v1-date-line", slug: "clearing", label: "Clearing house", dir: "creatives/campaign-4/",
+          code: "BAI-07-01", key: "v1-date-line", slug: "clearing", label: "Clearing house", dir: "creatives/campaign-5/",
           primary: "The ATO's free super clearing house closed on 1 July. Run the pay in PaySauce and one click does the rest: staff paid, the ATO filed, super sent to every fund.",
           headline: "The clearing house has closed", desc: "Get started.", cta: "Learn more",
           /* The only ad in the account that sends traffic to a page. The claim behind it is a news
@@ -138,6 +152,25 @@ window.CAMPAIGNS = {
              means talking to a payroll company. The page does that work, then books. */
           landing: "https://www.paysauce.com/au/super-clearing-house",
           destination: "Website, not instant form. Send traffic to the tagged URL below and leave the instant form off this one ad."
+        }
+      ]
+    },
+
+    /* New 24 Aug 2026. Same creative as SCN-04 v2-no-banking in Campaign 2, code and key both
+       unchanged so no new render is needed, cloned the same way Campaign 1's chef ad was cloned
+       into Campaign 2. Victoria is running that creative at a frequency of roughly 2.5; this
+       campaign puts it in front of Queensland instead, in its own campaign with its own budget so
+       it cannot pull spend away from the Victoria version. Keep both running side by side.
+       Primary text rewritten to long form on Mel's advice (24 Aug 2026 call with Kelly): Meta's
+       own text variants need more to work with on an open audience than a single short line. */
+    {
+      id: "campaign-6",
+      name: "Campaign 6 \u00b7 Queensland",
+      ads: [
+        {
+          code: "SCN-04", key: "v2-no-banking", slug: "banking", label: "Without the banking", dir: "creatives/campaign-6/",
+          primary: "Finished the pay run, only to realise there's still the banking to do?\n\nBank files to upload. Staff payments to make. PAYG to send. Super to pay. Suddenly, \"payroll's done\" doesn't feel very done.\n\nWith PaySauce, you can skip that part.\n\nOnce your pay run looks right, press go and staff wages, PAYG and super are sent where they need to go. No bank files to upload. No second round of payday admin. No remembering there's still super to sort later.\n\nOne pay run. One press. Actually done.",
+          headline: "Skip the banking bit.", desc: "Staff, PAYG and super handled.", cta: "Learn more"
         }
       ]
     }
