@@ -102,7 +102,11 @@
   .filerow{display:flex; gap:8px; align-items:center}
   .filerow code{flex:1; font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:12px;
     color:#dddcd7; background:#242422; border:1px solid #3a3a37; border-radius:8px;
-    padding:9px 11px; overflow-wrap:anywhere}
+    padding:9px 11px; overflow-wrap:anywhere; white-space:pre-wrap}
+  /* Campaign 6's primary text is four short paragraphs, not one line. Without pre-wrap the box
+     still COPIES the paragraph breaks correctly (the Copy button reads the raw string, not the
+     rendered text), but it SHOWS them run together as one blob, which reads as broken even though
+     nothing is. */
   .filerow button{background:none; border:1px solid #3a3a37; border-radius:8px; color:#f2f1ee;
     font-size:12px; padding:8px 12px; cursor:pointer}
   .filerow button:hover{border-color:#575652}
