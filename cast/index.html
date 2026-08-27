@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PaySauce Cast</title>
+<style>
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{background:#101113; color:#e8e9ea; font:14px/1.5 -apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif; padding:36px}
+  h1{font-size:18px; margin-bottom:4px}
+  .sub{color:#8a8f96; font-size:13px; margin-bottom:28px; max-width:820px}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:20px; max-width:1500px}
+  .card{background:#17181b; border:1px solid #26292d; border-radius:10px; overflow:hidden}
+  .frame{position:relative; aspect-ratio:1/1}
+  .frame .orig{position:absolute; inset:0; width:100%; height:100%; display:block}
+  .frame .twin{position:absolute; inset:0; opacity:0; transition:opacity .18s}
+  .frame.show-twin .twin{opacity:1}
+  .frame .bg{position:absolute; inset:0}
+  .frame .cut{position:absolute; inset:0; width:100%; height:100%}
+  .frame .toggle{position:absolute; right:10px; bottom:10px; z-index:2; background:rgba(16,17,19,.72);
+    border:1px solid rgba(255,255,255,.25); border-radius:6px; color:#e8e9ea; font-size:11px;
+    padding:4px 9px; cursor:pointer; backdrop-filter:blur(4px)}
+  .frame .toggle.on{border-color:#ff8808; color:#ff8808}
+  .meta{padding:12px 14px}
+  .meta b{display:block; font-size:13px; margin-bottom:8px}
+  .chips{display:flex; gap:6px; margin-bottom:10px}
+  .chip{width:20px; height:20px; border-radius:5px; border:1px solid rgba(255,255,255,.15)}
+  .btnrow{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:8px}
+  .btnlabel{color:#8a8f96; font-size:10px; text-transform:uppercase; letter-spacing:.08em; width:62px; flex:none}
+  .btnrow button,.btnrow a{background:#1f2125; border:1px solid #33373c; border-radius:6px; color:#e8e9ea;
+    font-size:12px; padding:6px 10px; cursor:pointer; text-decoration:none}
+  .btnrow button:hover,.btnrow a:hover{border-color:#4a4f55}
+  .btnrow .done{border-color:#ff8808; color:#ff8808}
+</style>
+</head>
+<body>
+  <h1>The PaySauce cast</h1>
+  <div class="sub">Cards show the <b>original render</b>: the hero asset, with its contact shading, grain and
+  organic weld between person and wall. The corner toggle previews the <b>CSS twin</b>: the same person as a
+  cutout over a rebuilt gradient backdrop, for layouts where the background must flex.
+  <b>Copy SVG for Figma</b> puts the backdrop on your clipboard as vector markup: click into a Figma canvas
+  and paste, and it lands as three editable rectangles (base gradient, shadow pool, highlight pool) you can
+  restyle or resize freely. <b>Copy CSS</b> is the same backdrop for web use. The swatches under each name
+  are the sampled top, bottom, highlight and shadow colours.</div>
+  <div class="grid">
+  <div class="card" data-payload="{&quot;css&quot;: &quot;background-image:radial-gradient(ellipse 75% 60% at 37% 37%, #e07f63 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 100% 100%, #5b1713 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #a2452d 0%, #8b301f 100%);&quot;, &quot;svg&quot;: &quot;&lt;svg xmlns=\&quot;http://www.w3.org/2000/svg\&quot; width=\&quot;1080\&quot; height=\&quot;1080\&quot; viewBox=\&quot;0 0 1080 1080\&quot;&gt;&lt;defs&gt;&lt;linearGradient id=\&quot;barkeeper-base\&quot; x1=\&quot;0\&quot; y1=\&quot;0\&quot; x2=\&quot;0\&quot; y2=\&quot;1080\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#a2452d\&quot;/&gt;&lt;stop offset=\&quot;1\&quot; stop-color=\&quot;#8b301f\&quot;/&gt;&lt;/linearGradient&gt;&lt;radialGradient id=\&quot;barkeeper-shadow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(1080 1080) scale(1026 864)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#5b1713\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.75\&quot; stop-color=\&quot;#5b1713\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;radialGradient id=\&quot;barkeeper-glow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(398 398) scale(810 648)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#e07f63\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.68\&quot; stop-color=\&quot;#e07f63\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;/defs&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#barkeeper-base)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#barkeeper-shadow)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#barkeeper-glow)\&quot;/&gt;&lt;/svg&gt;&quot;}">
+    <div class="frame">
+      <img class="orig" src="cast2-01-barkeeper.jpg" alt="Bar keeper">
+      <div class="twin"><div class="bg" style="background-image:radial-gradient(ellipse 75% 60% at 37% 37%, #e07f63 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 100% 100%, #5b1713 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #a2452d 0%, #8b301f 100%);"></div><img class="cut" src="cast2-01-barkeeper-cut.png" alt=""></div>
+      <button class="toggle">CSS twin</button>
+    </div>
+    <div class="meta">
+      <b>Bar keeper</b>
+      <div class="chips">
+        <span class="chip" style="background:#a2452d"></span>
+        <span class="chip" style="background:#8b301f"></span>
+        <span class="chip" style="background:#e07f63"></span>
+        <span class="chip" style="background:#5b1713"></span>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Image</span>
+        <a href="cast2-01-barkeeper.jpg" download="cast2-01-barkeeper-full.jpg">Full render JPG</a>
+        <a href="cast2-01-barkeeper-cut.png" download="cast2-01-barkeeper-cutout.png">Cutout PNG</a>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Backdrop</span>
+        <button class="b-svg">Copy SVG for Figma</button>
+        <button class="b-css">Copy CSS</button>
+        <a class="b-dl" download="cast2-01-barkeeper-backdrop.svg">SVG file</a>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-payload="{&quot;css&quot;: &quot;background-image:radial-gradient(ellipse 75% 60% at 74% 21%, #c25c3e 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 0% 100%, #350f0c 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #a4422a 0%, #641f16 100%);&quot;, &quot;svg&quot;: &quot;&lt;svg xmlns=\&quot;http://www.w3.org/2000/svg\&quot; width=\&quot;1080\&quot; height=\&quot;1080\&quot; viewBox=\&quot;0 0 1080 1080\&quot;&gt;&lt;defs&gt;&lt;linearGradient id=\&quot;barista-base\&quot; x1=\&quot;0\&quot; y1=\&quot;0\&quot; x2=\&quot;0\&quot; y2=\&quot;1080\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#a4422a\&quot;/&gt;&lt;stop offset=\&quot;1\&quot; stop-color=\&quot;#641f16\&quot;/&gt;&lt;/linearGradient&gt;&lt;radialGradient id=\&quot;barista-shadow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(0 1080) scale(1026 864)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#350f0c\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.75\&quot; stop-color=\&quot;#350f0c\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;radialGradient id=\&quot;barista-glow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(796 227) scale(810 648)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#c25c3e\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.68\&quot; stop-color=\&quot;#c25c3e\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;/defs&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#barista-base)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#barista-shadow)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#barista-glow)\&quot;/&gt;&lt;/svg&gt;&quot;}">
+    <div class="frame">
+      <img class="orig" src="cast2-02-barista.jpg" alt="Barista">
+      <div class="twin"><div class="bg" style="background-image:radial-gradient(ellipse 75% 60% at 74% 21%, #c25c3e 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 0% 100%, #350f0c 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #a4422a 0%, #641f16 100%);"></div><img class="cut" src="cast2-02-barista-cut.png" alt=""></div>
+      <button class="toggle">CSS twin</button>
+    </div>
+    <div class="meta">
+      <b>Barista</b>
+      <div class="chips">
+        <span class="chip" style="background:#a4422a"></span>
+        <span class="chip" style="background:#641f16"></span>
+        <span class="chip" style="background:#c25c3e"></span>
+        <span class="chip" style="background:#350f0c"></span>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Image</span>
+        <a href="cast2-02-barista.jpg" download="cast2-02-barista-full.jpg">Full render JPG</a>
+        <a href="cast2-02-barista-cut.png" download="cast2-02-barista-cutout.png">Cutout PNG</a>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Backdrop</span>
+        <button class="b-svg">Copy SVG for Figma</button>
+        <button class="b-css">Copy CSS</button>
+        <a class="b-dl" download="cast2-02-barista-backdrop.svg">SVG file</a>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-payload="{&quot;css&quot;: &quot;background-image:radial-gradient(ellipse 75% 60% at 32% 37%, #9f462a 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 100% 100%, #42110e 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #7d2f18 0%, #611d10 100%);&quot;, &quot;svg&quot;: &quot;&lt;svg xmlns=\&quot;http://www.w3.org/2000/svg\&quot; width=\&quot;1080\&quot; height=\&quot;1080\&quot; viewBox=\&quot;0 0 1080 1080\&quot;&gt;&lt;defs&gt;&lt;linearGradient id=\&quot;chef-base\&quot; x1=\&quot;0\&quot; y1=\&quot;0\&quot; x2=\&quot;0\&quot; y2=\&quot;1080\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#7d2f18\&quot;/&gt;&lt;stop offset=\&quot;1\&quot; stop-color=\&quot;#611d10\&quot;/&gt;&lt;/linearGradient&gt;&lt;radialGradient id=\&quot;chef-shadow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(1080 1080) scale(1026 864)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#42110e\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.75\&quot; stop-color=\&quot;#42110e\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;radialGradient id=\&quot;chef-glow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(341 398) scale(810 648)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#9f462a\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.68\&quot; stop-color=\&quot;#9f462a\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;/defs&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#chef-base)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#chef-shadow)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#chef-glow)\&quot;/&gt;&lt;/svg&gt;&quot;}">
+    <div class="frame">
+      <img class="orig" src="cast2-03-chef.jpg" alt="Head chef">
+      <div class="twin"><div class="bg" style="background-image:radial-gradient(ellipse 75% 60% at 32% 37%, #9f462a 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 100% 100%, #42110e 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #7d2f18 0%, #611d10 100%);"></div><img class="cut" src="cast2-03-chef-cut.png" alt=""></div>
+      <button class="toggle">CSS twin</button>
+    </div>
+    <div class="meta">
+      <b>Head chef</b>
+      <div class="chips">
+        <span class="chip" style="background:#7d2f18"></span>
+        <span class="chip" style="background:#611d10"></span>
+        <span class="chip" style="background:#9f462a"></span>
+        <span class="chip" style="background:#42110e"></span>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Image</span>
+        <a href="cast2-03-chef.jpg" download="cast2-03-chef-full.jpg">Full render JPG</a>
+        <a href="cast2-03-chef-cut.png" download="cast2-03-chef-cutout.png">Cutout PNG</a>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Backdrop</span>
+        <button class="b-svg">Copy SVG for Figma</button>
+        <button class="b-css">Copy CSS</button>
+        <a class="b-dl" download="cast2-03-chef-backdrop.svg">SVG file</a>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-payload="{&quot;css&quot;: &quot;background-image:radial-gradient(ellipse 75% 60% at 68% 37%, #bf7156 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 100% 100%, #461910 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #9f5138 0%, #6c2b1a 100%);&quot;, &quot;svg&quot;: &quot;&lt;svg xmlns=\&quot;http://www.w3.org/2000/svg\&quot; width=\&quot;1080\&quot; height=\&quot;1080\&quot; viewBox=\&quot;0 0 1080 1080\&quot;&gt;&lt;defs&gt;&lt;linearGradient id=\&quot;salon-base\&quot; x1=\&quot;0\&quot; y1=\&quot;0\&quot; x2=\&quot;0\&quot; y2=\&quot;1080\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#9f5138\&quot;/&gt;&lt;stop offset=\&quot;1\&quot; stop-color=\&quot;#6c2b1a\&quot;/&gt;&lt;/linearGradient&gt;&lt;radialGradient id=\&quot;salon-shadow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(1080 1080) scale(1026 864)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#461910\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.75\&quot; stop-color=\&quot;#461910\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;radialGradient id=\&quot;salon-glow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(739 398) scale(810 648)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#bf7156\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.68\&quot; stop-color=\&quot;#bf7156\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;/defs&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#salon-base)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#salon-shadow)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#salon-glow)\&quot;/&gt;&lt;/svg&gt;&quot;}">
+    <div class="frame">
+      <img class="orig" src="cast2-04-salon.jpg" alt="Salon owner">
+      <div class="twin"><div class="bg" style="background-image:radial-gradient(ellipse 75% 60% at 68% 37%, #bf7156 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 100% 100%, #461910 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #9f5138 0%, #6c2b1a 100%);"></div><img class="cut" src="cast2-04-salon-cut.png" alt=""></div>
+      <button class="toggle">CSS twin</button>
+    </div>
+    <div class="meta">
+      <b>Salon owner</b>
+      <div class="chips">
+        <span class="chip" style="background:#9f5138"></span>
+        <span class="chip" style="background:#6c2b1a"></span>
+        <span class="chip" style="background:#bf7156"></span>
+        <span class="chip" style="background:#461910"></span>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Image</span>
+        <a href="cast2-04-salon.jpg" download="cast2-04-salon-full.jpg">Full render JPG</a>
+        <a href="cast2-04-salon-cut.png" download="cast2-04-salon-cutout.png">Cutout PNG</a>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Backdrop</span>
+        <button class="b-svg">Copy SVG for Figma</button>
+        <button class="b-css">Copy CSS</button>
+        <a class="b-dl" download="cast2-04-salon-backdrop.svg">SVG file</a>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-payload="{&quot;css&quot;: &quot;background-image:radial-gradient(ellipse 75% 60% at 26% 37%, #bb573f 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 100% 100%, #5c1a17 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #9e3b27 0%, #822b20 100%);&quot;, &quot;svg&quot;: &quot;&lt;svg xmlns=\&quot;http://www.w3.org/2000/svg\&quot; width=\&quot;1080\&quot; height=\&quot;1080\&quot; viewBox=\&quot;0 0 1080 1080\&quot;&gt;&lt;defs&gt;&lt;linearGradient id=\&quot;framer-base\&quot; x1=\&quot;0\&quot; y1=\&quot;0\&quot; x2=\&quot;0\&quot; y2=\&quot;1080\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#9e3b27\&quot;/&gt;&lt;stop offset=\&quot;1\&quot; stop-color=\&quot;#822b20\&quot;/&gt;&lt;/linearGradient&gt;&lt;radialGradient id=\&quot;framer-shadow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(1080 1080) scale(1026 864)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#5c1a17\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.75\&quot; stop-color=\&quot;#5c1a17\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;radialGradient id=\&quot;framer-glow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(284 398) scale(810 648)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#bb573f\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.68\&quot; stop-color=\&quot;#bb573f\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;/defs&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#framer-base)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#framer-shadow)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#framer-glow)\&quot;/&gt;&lt;/svg&gt;&quot;}">
+    <div class="frame">
+      <img class="orig" src="cast2-05-framer.jpg" alt="Picture framer">
+      <div class="twin"><div class="bg" style="background-image:radial-gradient(ellipse 75% 60% at 26% 37%, #bb573f 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 100% 100%, #5c1a17 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #9e3b27 0%, #822b20 100%);"></div><img class="cut" src="cast2-05-framer-cut.png" alt=""></div>
+      <button class="toggle">CSS twin</button>
+    </div>
+    <div class="meta">
+      <b>Picture framer</b>
+      <div class="chips">
+        <span class="chip" style="background:#9e3b27"></span>
+        <span class="chip" style="background:#822b20"></span>
+        <span class="chip" style="background:#bb573f"></span>
+        <span class="chip" style="background:#5c1a17"></span>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Image</span>
+        <a href="cast2-05-framer.jpg" download="cast2-05-framer-full.jpg">Full render JPG</a>
+        <a href="cast2-05-framer-cut.png" download="cast2-05-framer-cutout.png">Cutout PNG</a>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Backdrop</span>
+        <button class="b-svg">Copy SVG for Figma</button>
+        <button class="b-css">Copy CSS</button>
+        <a class="b-dl" download="cast2-05-framer-backdrop.svg">SVG file</a>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-payload="{&quot;css&quot;: &quot;background-image:radial-gradient(ellipse 75% 60% at 16% 37%, #d47b69 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 0% 100%, #2f0c05 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #a74830 0%, #882d1b 100%);&quot;, &quot;svg&quot;: &quot;&lt;svg xmlns=\&quot;http://www.w3.org/2000/svg\&quot; width=\&quot;1080\&quot; height=\&quot;1080\&quot; viewBox=\&quot;0 0 1080 1080\&quot;&gt;&lt;defs&gt;&lt;linearGradient id=\&quot;retail-base\&quot; x1=\&quot;0\&quot; y1=\&quot;0\&quot; x2=\&quot;0\&quot; y2=\&quot;1080\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#a74830\&quot;/&gt;&lt;stop offset=\&quot;1\&quot; stop-color=\&quot;#882d1b\&quot;/&gt;&lt;/linearGradient&gt;&lt;radialGradient id=\&quot;retail-shadow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(0 1080) scale(1026 864)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#2f0c05\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.75\&quot; stop-color=\&quot;#2f0c05\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;radialGradient id=\&quot;retail-glow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(171 398) scale(810 648)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#d47b69\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.68\&quot; stop-color=\&quot;#d47b69\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;/defs&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#retail-base)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#retail-shadow)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#retail-glow)\&quot;/&gt;&lt;/svg&gt;&quot;}">
+    <div class="frame">
+      <img class="orig" src="cast2-06-retail.jpg" alt="Bookshop owner">
+      <div class="twin"><div class="bg" style="background-image:radial-gradient(ellipse 75% 60% at 16% 37%, #d47b69 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 0% 100%, #2f0c05 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #a74830 0%, #882d1b 100%);"></div><img class="cut" src="cast2-06-retail-cut.png" alt=""></div>
+      <button class="toggle">CSS twin</button>
+    </div>
+    <div class="meta">
+      <b>Bookshop owner</b>
+      <div class="chips">
+        <span class="chip" style="background:#a74830"></span>
+        <span class="chip" style="background:#882d1b"></span>
+        <span class="chip" style="background:#d47b69"></span>
+        <span class="chip" style="background:#2f0c05"></span>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Image</span>
+        <a href="cast2-06-retail.jpg" download="cast2-06-retail-full.jpg">Full render JPG</a>
+        <a href="cast2-06-retail-cut.png" download="cast2-06-retail-cutout.png">Cutout PNG</a>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Backdrop</span>
+        <button class="b-svg">Copy SVG for Figma</button>
+        <button class="b-css">Copy CSS</button>
+        <a class="b-dl" download="cast2-06-retail-backdrop.svg">SVG file</a>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-payload="{&quot;css&quot;: &quot;background-image:radial-gradient(ellipse 75% 60% at 68% 37%, #c35f3a 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 5% 100%, #490c06 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #9a3c21 0%, #6d1d11 100%);&quot;, &quot;svg&quot;: &quot;&lt;svg xmlns=\&quot;http://www.w3.org/2000/svg\&quot; width=\&quot;1080\&quot; height=\&quot;1080\&quot; viewBox=\&quot;0 0 1080 1080\&quot;&gt;&lt;defs&gt;&lt;linearGradient id=\&quot;florist-base\&quot; x1=\&quot;0\&quot; y1=\&quot;0\&quot; x2=\&quot;0\&quot; y2=\&quot;1080\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#9a3c21\&quot;/&gt;&lt;stop offset=\&quot;1\&quot; stop-color=\&quot;#6d1d11\&quot;/&gt;&lt;/linearGradient&gt;&lt;radialGradient id=\&quot;florist-shadow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(57 1080) scale(1026 864)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#490c06\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.75\&quot; stop-color=\&quot;#490c06\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;radialGradient id=\&quot;florist-glow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(739 398) scale(810 648)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#c35f3a\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.68\&quot; stop-color=\&quot;#c35f3a\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;/defs&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#florist-base)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#florist-shadow)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#florist-glow)\&quot;/&gt;&lt;/svg&gt;&quot;}">
+    <div class="frame">
+      <img class="orig" src="cast2-07-florist.jpg" alt="Florist">
+      <div class="twin"><div class="bg" style="background-image:radial-gradient(ellipse 75% 60% at 68% 37%, #c35f3a 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 5% 100%, #490c06 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #9a3c21 0%, #6d1d11 100%);"></div><img class="cut" src="cast2-07-florist-cut.png" alt=""></div>
+      <button class="toggle">CSS twin</button>
+    </div>
+    <div class="meta">
+      <b>Florist</b>
+      <div class="chips">
+        <span class="chip" style="background:#9a3c21"></span>
+        <span class="chip" style="background:#6d1d11"></span>
+        <span class="chip" style="background:#c35f3a"></span>
+        <span class="chip" style="background:#490c06"></span>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Image</span>
+        <a href="cast2-07-florist.jpg" download="cast2-07-florist-full.jpg">Full render JPG</a>
+        <a href="cast2-07-florist-cut.png" download="cast2-07-florist-cutout.png">Cutout PNG</a>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Backdrop</span>
+        <button class="b-svg">Copy SVG for Figma</button>
+        <button class="b-css">Copy CSS</button>
+        <a class="b-dl" download="cast2-07-florist-backdrop.svg">SVG file</a>
+      </div>
+    </div>
+  </div>
+  <div class="card" data-payload="{&quot;css&quot;: &quot;background-image:radial-gradient(ellipse 75% 60% at 5% 26%, #b14b2e 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 100% 100%, #4a110b 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #9a391f 0%, #712112 100%);&quot;, &quot;svg&quot;: &quot;&lt;svg xmlns=\&quot;http://www.w3.org/2000/svg\&quot; width=\&quot;1080\&quot; height=\&quot;1080\&quot; viewBox=\&quot;0 0 1080 1080\&quot;&gt;&lt;defs&gt;&lt;linearGradient id=\&quot;bookkeeper-base\&quot; x1=\&quot;0\&quot; y1=\&quot;0\&quot; x2=\&quot;0\&quot; y2=\&quot;1080\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#9a391f\&quot;/&gt;&lt;stop offset=\&quot;1\&quot; stop-color=\&quot;#712112\&quot;/&gt;&lt;/linearGradient&gt;&lt;radialGradient id=\&quot;bookkeeper-shadow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(1080 1080) scale(1026 864)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#4a110b\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.75\&quot; stop-color=\&quot;#4a110b\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;radialGradient id=\&quot;bookkeeper-glow\&quot; cx=\&quot;0\&quot; cy=\&quot;0\&quot; r=\&quot;1\&quot; gradientUnits=\&quot;userSpaceOnUse\&quot; gradientTransform=\&quot;translate(57 284) scale(810 648)\&quot;&gt;&lt;stop offset=\&quot;0\&quot; stop-color=\&quot;#b14b2e\&quot; stop-opacity=\&quot;1\&quot;/&gt;&lt;stop offset=\&quot;0.68\&quot; stop-color=\&quot;#b14b2e\&quot; stop-opacity=\&quot;0\&quot;/&gt;&lt;/radialGradient&gt;&lt;/defs&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#bookkeeper-base)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#bookkeeper-shadow)\&quot;/&gt;&lt;rect width=\&quot;1080\&quot; height=\&quot;1080\&quot; fill=\&quot;url(#bookkeeper-glow)\&quot;/&gt;&lt;/svg&gt;&quot;}">
+    <div class="frame">
+      <img class="orig" src="cast2-08-bookkeeper.jpg" alt="Bookkeeper">
+      <div class="twin"><div class="bg" style="background-image:radial-gradient(ellipse 75% 60% at 5% 26%, #b14b2e 0%, rgba(0,0,0,0) 68%),radial-gradient(ellipse 95% 80% at 100% 100%, #4a110b 0%, rgba(0,0,0,0) 75%),linear-gradient(180deg, #9a391f 0%, #712112 100%);"></div><img class="cut" src="cast2-08-bookkeeper-cut.png" alt=""></div>
+      <button class="toggle">CSS twin</button>
+    </div>
+    <div class="meta">
+      <b>Bookkeeper</b>
+      <div class="chips">
+        <span class="chip" style="background:#9a391f"></span>
+        <span class="chip" style="background:#712112"></span>
+        <span class="chip" style="background:#b14b2e"></span>
+        <span class="chip" style="background:#4a110b"></span>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Image</span>
+        <a href="cast2-08-bookkeeper.jpg" download="cast2-08-bookkeeper-full.jpg">Full render JPG</a>
+        <a href="cast2-08-bookkeeper-cut.png" download="cast2-08-bookkeeper-cutout.png">Cutout PNG</a>
+      </div>
+      <div class="btnrow"><span class="btnlabel">Backdrop</span>
+        <button class="b-svg">Copy SVG for Figma</button>
+        <button class="b-css">Copy CSS</button>
+        <a class="b-dl" download="cast2-08-bookkeeper-backdrop.svg">SVG file</a>
+      </div>
+    </div>
+  </div>
+  </div>
+<script>
+document.querySelectorAll('.card').forEach(card => {
+  const p = JSON.parse(card.dataset.payload);
+  const flash = btn => { const t = btn.textContent; btn.textContent = 'Copied'; btn.classList.add('done');
+    setTimeout(() => { btn.textContent = t; btn.classList.remove('done'); }, 1400); };
+  const copy = (text, btn) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => flash(btn), () => fallback(text, btn));
+    } else fallback(text, btn);
+  };
+  const fallback = (text, btn) => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); ta.remove(); flash(btn);
+  };
+  card.querySelector('.b-svg').addEventListener('click', e => copy(p.svg, e.target));
+  card.querySelector('.b-css').addEventListener('click', e => copy(p.css, e.target));
+  card.querySelector('.b-dl').href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(p.svg);
+  const frame = card.querySelector('.frame'), tog = card.querySelector('.toggle');
+  tog.addEventListener('click', () => {
+    frame.classList.toggle('show-twin');
+    tog.classList.toggle('on');
+    tog.textContent = frame.classList.contains('show-twin') ? 'Original' : 'CSS twin';
+  });
+});
+</script>
+</body>
+</html>
