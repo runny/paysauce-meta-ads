@@ -200,7 +200,7 @@ window.CAMPAIGNS = {
         {
           code: "SCN-05", key: "v1-one-click", slug: "oneclick", label: "One click", dir: "creatives/campaign-7/",
           primary: "Finished the pay run, only to realise there's still the banking to do?\n\nBank files to upload. Staff payments to make. PAYG to send. Super to pay. Suddenly, \"payroll's done\" doesn't feel very done.\n\nWith PaySauce, you can skip that part.\n\nOnce your pay run looks right, press go. Every wage, the PAYG and the super go out together, to the people and the funds they belong to. No bank files to upload. No second round of payday admin. No remembering there's still super to sort later.\n\nOne pay run. One press. Everyone paid.",
-          headline: "One press, everyone paid.", desc: "Staff, PAYG and super handled.", cta: "Learn more"
+          headline: "One click, everyone paid.", desc: "Staff, PAYG and super handled.", cta: "Learn more"
         },
         {
           code: "SCN-06", key: "v1-pay-everyone", slug: "tiles", label: "Pay everyone", dir: "creatives/campaign-7/",
