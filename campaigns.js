@@ -185,6 +185,10 @@ window.CAMPAIGNS = {
        Long form on purpose, same reasoning as Campaign 6: Meta's own text variants need more to
        work with on an open audience than a single short line (Mel, 24 Aug 2026).
 
+       Press became click throughout on 6 Oct, Aaron's call: both pictures say "one click", and the
+       ads were saying click in the image and press in the words. Mel's own close was "One pay run.
+       One press. Actually done."
+
        The two differ only where the art does. SCN-05 shows each payment with its amount and a Paid
        stamp and closes on a green "Everyone paid", so its fourth paragraph and its last beat follow
        that. SCN-06's button says "Pay everyone" and its foot line is "Payday, without the banking",
@@ -199,12 +203,12 @@ window.CAMPAIGNS = {
       ads: [
         {
           code: "SCN-05", key: "v1-one-click", slug: "oneclick", label: "One click", dir: "creatives/campaign-7/",
-          primary: "Finished the pay run, only to realise there's still the banking to do?\n\nBank files to upload. Staff payments to make. PAYG to send. Super to pay. Suddenly, \"payroll's done\" doesn't feel very done.\n\nWith PaySauce, you can skip that part.\n\nOnce your pay run looks right, press go. Every wage, the PAYG and the super go out together, to the people and the funds they belong to. No bank files to upload. No second round of payday admin. No remembering there's still super to sort later.\n\nOne pay run. One press. Everyone paid.",
+          primary: "Finished the pay run, only to realise there's still the banking to do?\n\nBank files to upload. Staff payments to make. PAYG to send. Super to pay. Suddenly, \"payroll's done\" doesn't feel very done.\n\nWith PaySauce, you can skip that part.\n\nOnce your pay run looks right, one click sends every wage, the PAYG and the super to the people and the funds they belong to. No bank files to upload. No second round of payday admin. No remembering there's still super to sort later.\n\nOne pay run. One click. Everyone paid.",
           headline: "One click, everyone paid.", desc: "Staff, PAYG and super handled.", cta: "Learn more"
         },
         {
           code: "SCN-06", key: "v1-pay-everyone", slug: "tiles", label: "Pay everyone", dir: "creatives/campaign-7/",
-          primary: "Finished the pay run, only to realise there's still the banking to do?\n\nBank files to upload. Staff payments to make. PAYG to send. Super to pay. Suddenly, \"payroll's done\" doesn't feel very done.\n\nWith PaySauce, you can skip that part.\n\nOnce your pay run looks right, press Pay everyone. Staff wages, PAYG and super are all sent where they need to go. No bank files to upload. No second round of payday admin. No remembering there's still super to sort later.\n\nOne pay run. One press. Payday, without the banking.",
+          primary: "Finished the pay run, only to realise there's still the banking to do?\n\nBank files to upload. Staff payments to make. PAYG to send. Super to pay. Suddenly, \"payroll's done\" doesn't feel very done.\n\nWith PaySauce, you can skip that part.\n\nOnce your pay run looks right, click Pay everyone. Staff wages, PAYG and super are all sent where they need to go. No bank files to upload. No second round of payday admin. No remembering there's still super to sort later.\n\nOne pay run. One click. Payday, without the banking.",
           headline: "Skip the banking bit.", desc: "Staff, PAYG and super handled.", cta: "Learn more"
         }
       ]
