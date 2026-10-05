@@ -26,7 +26,7 @@
    alternates here. */
 
 window.CAMPAIGNS = {
-  updated: "2026-08-24",
+  updated: "2026-10-06",
 
   /* Stated once, rendered on every ad, so it cannot drift row to row. */
   standing: {
@@ -170,6 +170,41 @@ window.CAMPAIGNS = {
         {
           code: "SCN-04", key: "v2-no-banking", slug: "banking", label: "Without the banking", dir: "creatives/campaign-6/",
           primary: "Finished the pay run, only to realise there's still the banking to do?\n\nBank files to upload. Staff payments to make. PAYG to send. Super to pay. Suddenly, \"payroll's done\" doesn't feel very done.\n\nWith PaySauce, you can skip that part.\n\nOnce your pay run looks right, press go and staff wages, PAYG and super are sent where they need to go. No bank files to upload. No second round of payday admin. No remembering there's still super to sort later.\n\nOne pay run. One press. Actually done.",
+          headline: "Skip the banking bit.", desc: "Staff, PAYG and super handled.", cta: "Learn more"
+        }
+      ]
+    },
+
+    /* ⚠ COPY NOT YET APPROVED BY AARON. Both primaries are Mel's Campaign 6 long form with the
+       smallest change each new creative needs, written 6 Oct 2026 because no copy was supplied with
+       the art. They rest on the SAME claim as SCN-04, CLAIMS.md pays-everyone-no-bank-file [F],
+       from PaySauce's own AU help centre article Understanding payment methods, so nothing new is
+       being asserted. Neither mentions setup, per the claims-to-avoid list: this lane describes a
+       business already running.
+
+       Long form on purpose, same reasoning as Campaign 6: Meta's own text variants need more to
+       work with on an open audience than a single short line (Mel, 24 Aug 2026).
+
+       The two differ only where the art does. SCN-05 shows each payment with its amount and a Paid
+       stamp and closes on a green "Everyone paid", so its fourth paragraph and its last beat follow
+       that. SCN-06's button says "Pay everyone" and its foot line is "Payday, without the banking",
+       so its text names the button and closes on the line already on the picture.
+
+       Open: these two and SCN-04 now make the same argument three ways. Running SCN-06 on Mel's
+       text VERBATIM would make it a clean art test against SCN-04, copy held constant. Aaron's
+       call. */
+    {
+      id: "campaign-7",
+      name: "Campaign 7 \u00b7 Pay run",
+      ads: [
+        {
+          code: "SCN-05", key: "v1-one-click", slug: "oneclick", label: "One click", dir: "creatives/campaign-7/",
+          primary: "Finished the pay run, only to realise there's still the banking to do?\n\nBank files to upload. Staff payments to make. PAYG to send. Super to pay. Suddenly, \"payroll's done\" doesn't feel very done.\n\nWith PaySauce, you can skip that part.\n\nOnce your pay run looks right, press go. Every wage, the PAYG and the super go out together, to the people and the funds they belong to. No bank files to upload. No second round of payday admin. No remembering there's still super to sort later.\n\nOne pay run. One press. Everyone paid.",
+          headline: "One press, everyone paid.", desc: "Staff, PAYG and super handled.", cta: "Learn more"
+        },
+        {
+          code: "SCN-06", key: "v1-pay-everyone", slug: "tiles", label: "Pay everyone", dir: "creatives/campaign-7/",
+          primary: "Finished the pay run, only to realise there's still the banking to do?\n\nBank files to upload. Staff payments to make. PAYG to send. Super to pay. Suddenly, \"payroll's done\" doesn't feel very done.\n\nWith PaySauce, you can skip that part.\n\nOnce your pay run looks right, press Pay everyone. Staff wages, PAYG and super are all sent where they need to go. No bank files to upload. No second round of payday admin. No remembering there's still super to sort later.\n\nOne pay run. One press. Payday, without the banking.",
           headline: "Skip the banking bit.", desc: "Staff, PAYG and super handled.", cta: "Learn more"
         }
       ]
